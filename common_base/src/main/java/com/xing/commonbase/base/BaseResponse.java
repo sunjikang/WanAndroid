@@ -16,6 +16,14 @@ public class BaseResponse<T> {
     private T results;
     private boolean error = true;
 
+    /**
+     * 兼容quality
+     * @return
+     */
+    private boolean status;
+    private String code;
+    private String message;
+
     public int getErrorCode() {
         return errorCode;
     }
@@ -56,12 +64,41 @@ public class BaseResponse<T> {
         this.error = error;
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     @Override
     public String toString() {
         return "BaseResponse{" +
                 "errorCode=" + errorCode +
                 ", errorMsg='" + errorMsg + '\'' +
                 ", data=" + data +
+                ", results=" + results +
+                ", error=" + error +
+                ", status=" + status +
+                ", code='" + code + '\'' +
+                ", message='" + message + '\'' +
                 '}';
     }
 }

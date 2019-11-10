@@ -19,7 +19,6 @@ public abstract class BaseMVPActivity<P extends IPresenter> extends BaseActivity
             presenter.attachView(this);
         }
         unbinder = ButterKnife.bind(this);
-
     }
 
     protected abstract int getLayoutResId();

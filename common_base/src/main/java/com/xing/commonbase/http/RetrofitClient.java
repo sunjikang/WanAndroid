@@ -5,6 +5,8 @@ import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.xing.commonbase.base.BaseApplication;
+import com.xing.commonbase.interceptor.AddCookiesInterceptor;
+import com.xing.commonbase.interceptor.ReceivedCookiesInterceptor;
 import com.xing.commonbase.json.FastJsonConverterFactory;
 
 import java.util.concurrent.TimeUnit;
@@ -15,7 +17,8 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 public class RetrofitClient {
 
-    private static final String API_HOST = "https://www.wanandroid.com/";
+//    private static final String API_HOST = "https://www.wanandroid.com/";
+    private static final String API_HOST = "http://10.2.10.36:8088/";
     private static RetrofitClient instance;
     private static OkHttpClient okHttpClient;
     private static Retrofit retrofit;
@@ -34,6 +37,8 @@ public class RetrofitClient {
                 .hostnameVerifier(SSLSocketClient.getHostnameVerifier())
                 .addInterceptor(InterceptorUtil.logInterceptor())
                 .addInterceptor(InterceptorUtil.headerInterceptor())
+//                .addInterceptor(new ReceivedCookiesInterceptor())
+//                .addInterceptor(new AddCookiesInterceptor())
                 .build();
 
         retrofit = new Retrofit.Builder()

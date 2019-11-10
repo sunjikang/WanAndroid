@@ -1,5 +1,7 @@
 package com.xing.commonbase.base;
 
+import android.text.TextUtils;
+
 import com.xing.commonbase.http.ApiException;
 import com.xing.commonbase.http.ExceptionHandler;
 import com.xing.commonbase.mvp.IView;
@@ -34,6 +36,10 @@ public abstract class BaseObserver<T> extends DisposableObserver<BaseResponse<T>
         String errmsg = baseResponse.getErrorMsg();
         // 兼容 gank api
         boolean isOk = !baseResponse.isError();
+        // 兼容 quality api
+        boolean status = baseResponse.isStatus();
+        String code = baseResponse.getCode();
+        String message = baseResponse.getMessage();
         if (errcode == 0 || errcode == 200) {   // wanandroid api
             T data = baseResponse.getData();
             // 将服务端获取到的正常数据传递给上层调用方
@@ -41,6 +47,13 @@ public abstract class BaseObserver<T> extends DisposableObserver<BaseResponse<T>
         } else if (isOk) {   // gank api
             T data = baseResponse.getResults();
             onSuccess(data);
+        } else if (!TextUtils.isEmpty(code)) { // quality api
+            if (status) {
+                T data = baseResponse.getData();
+                onSuccess(data);
+            } else {
+                onError(new ApiException(Integer.parseInt(code), message));
+            }
         } else {
             onError(new ApiException(errcode, errmsg));
         }

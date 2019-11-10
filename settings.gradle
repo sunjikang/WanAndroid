@@ -1,1 +1,1 @@
-include ':app', ':common_base', ':module_usercenter', ':module_main', ':module_gank'
+include ':app', ':common_base', ':module_usercenter', ':module_main', ':module_gank', ':module_quality'

@@ -32,7 +32,7 @@ public interface UserCenterApiService {
      * @param password
      * @return
      */
-    @POST("user/login")
+    @POST("app/login")
     @FormUrlEncoded
     Observable<BaseResponse<LoginResult>> login(@Field("username") String username,
                                                 @Field("password") String password);

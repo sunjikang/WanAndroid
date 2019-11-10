@@ -31,7 +31,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
      */
     private void saveCookie(LoginResult result) {
         if (result != null) {
-//            SharedPreferenceUtils.write(Constants.File_TOKEN, Constants.ACCESS_TOKEN, result.getAccessToken());
+            SharedPreferenceUtil.write(Constants.File_TOKEN, Constants.ACCESS_TOKEN, result.getToken());
         }
     }
 

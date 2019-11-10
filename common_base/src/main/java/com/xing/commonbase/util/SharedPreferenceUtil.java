@@ -5,6 +5,10 @@ import android.content.SharedPreferences;
 
 import com.xing.commonbase.base.BaseApplication;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
 public class SharedPreferenceUtil {
 
     private SharedPreferenceUtil() {
@@ -24,6 +28,8 @@ public class SharedPreferenceUtil {
             editor.putLong(key, (Long) value);
         } else if (value instanceof Boolean) {
             editor.putBoolean(key, (Boolean) value);
+        } else if (value instanceof Set) {
+            editor.putStringSet(key, (Set<String>) value);
         }
         editor.apply();
     }
@@ -41,6 +47,11 @@ public class SharedPreferenceUtil {
     public static boolean read(String name, String key, boolean defValue) {
         SharedPreferences sp = BaseApplication.getApplication().getSharedPreferences(name, Context.MODE_PRIVATE);
         return sp.getBoolean(key, defValue);
+    }
+
+    public static HashSet read(String name, String key, HashSet defValue) {
+        SharedPreferences sp = BaseApplication.getApplication().getSharedPreferences(name, Context.MODE_PRIVATE);
+        return (HashSet) sp.getStringSet(key, defValue);
     }
 
 }
