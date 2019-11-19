@@ -28,6 +28,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                outputFileName = "hzcs_quality_${rootProject.ext.android.versionCode}_${rootProject.ext.android.versionName}_${new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))}.apk"
+            }
+        }
+    }
 }
 
 dependencies {

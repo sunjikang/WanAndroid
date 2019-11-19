@@ -20,6 +20,7 @@ import com.xing.commonbase.base.BaseMVPActivity;
 import com.xing.commonbase.constants.Constants;
 import com.xing.commonbase.manager.UserLoginManager;
 import com.xing.commonbase.util.SoftKeyboardUtil;
+import com.xing.commonbase.widget.loading.ProgressDialog;
 import com.xing.usercenter.R;
 import com.xing.usercenter.bean.LoginResult;
 import com.xing.usercenter.contract.LoginContract;
@@ -34,6 +35,7 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
     CheckBox pwdVisibleCheckBox;
     EditText usernameEditText;
     EditText passwordEditText;
+    EditText urlEditText;
 
     @Override
     protected int getLayoutResId() {
@@ -47,6 +49,7 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
         pwdVisibleCheckBox = findViewById(R.id.cb_login_pwd_visible);
         usernameEditText = findViewById(R.id.et_login_username);
         passwordEditText = findViewById(R.id.et_login_password);
+        urlEditText = findViewById(R.id.et_login_url);
     }
 
     @Override
@@ -59,15 +62,22 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
         super.initData();
         // 添加下划线
         registerTxtView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        String cacheUrl = presenter.readUsernamePassword(Constants.URL);
         String cacheUsername = presenter.readUsernamePassword(Constants.USERNAME);
         String cachePassword = presenter.readUsernamePassword(Constants.PASSWORD);
-//        String cacheUsername = "xing2019";
-//        String cachePassword = "123456";
-        usernameEditText.setText(cacheUsername);
-        usernameEditText.setSelection(cacheUsername.length());
-        passwordEditText.setText(cachePassword);
-        passwordEditText.setSelection(cachePassword.length());
 
+        if (!TextUtils.isEmpty(cacheUrl)) {
+            urlEditText.setText(cacheUrl);
+            urlEditText.setSelection(cacheUrl.length());
+        }
+        if (!TextUtils.isEmpty(cacheUsername)) {
+            usernameEditText.setText(cacheUsername);
+            usernameEditText.setSelection(cacheUsername.length());
+        }
+        if (!TextUtils.isEmpty(cachePassword)) {
+            passwordEditText.setText(cachePassword);
+            passwordEditText.setSelection(cachePassword.length());
+        }
         loginBtn.setOnClickListener(this);
         registerTxtView.setOnClickListener(this);
         pwdVisibleCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -110,8 +120,13 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
      * xing2019 / 123456
      */
     private void login() {
+        String url = urlEditText.getText().toString().trim();
         String username = usernameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
+        if (TextUtils.isEmpty(url)) {
+            Toast.makeText(mContext, R.string.please_input_url, Toast.LENGTH_LONG).show();
+            return;
+        }
         if (TextUtils.isEmpty(username)) {
             Toast.makeText(mContext, R.string.please_input_username, Toast.LENGTH_LONG).show();
             return;
@@ -120,17 +135,18 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
             Toast.makeText(mContext, R.string.please_input_password, Toast.LENGTH_LONG).show();
             return;
         }
-        presenter.login(username, password);
+        presenter.login(url, username, password);
     }
 
 
     @Override
     public void loginSuccess(LoginResult result) {
         UserLoginManager.getInstance().setLoggedin(true);
+        String url = urlEditText.getText().toString().trim();
         String username = usernameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
-        presenter.saveUsernamePassword(username, password);
-        gotoMainActivity();
+        presenter.saveUsernamePassword(url, username, password);
+        gotoQualityActivity();
     }
 
 
@@ -149,23 +165,24 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
         finish();
     }
 
+    /**
+     * 跳转质检界面
+     */
+    private void gotoQualityActivity() {
+        ARouter.getInstance().build("/quality/QualityActivity").navigation();
+        finish();
+    }
+
+
     @Override
     public void showLoading() {
-//        dialog = new FlagDialog.Builder()
-//                .layoutResId(R.layout.dialog_login)
-//                .width(DensityUtils.dp2px(mContext, 150))
-//                .height(DensityUtils.dp2px(mContext, 120))
-//                .setOutsideCancel(false)
-//                .dimAmount(0f)
-//                .create()
-//                .show(((AppCompatActivity) mContext).getSupportFragmentManager());
+        ProgressDialog.getInstance().show(this);
     }
 
     @Override
     public void hideLoading() {
-
+        ProgressDialog.getInstance().dismiss();
     }
-
 
     @Override
     public void onDestroy() {

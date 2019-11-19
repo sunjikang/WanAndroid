@@ -18,7 +18,10 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.xing.commonbase.base.BaseMVPActivity;
+import com.xing.commonbase.constants.Constants;
+import com.xing.commonbase.util.SharedPreferenceUtil;
 import com.xing.commonbase.util.ToastUtil;
+import com.xing.commonbase.widget.loading.ProgressDialog;
 import com.xing.module.quality.R;
 import com.xing.module.quality.adapter.PlanDialogAdapter;
 import com.xing.module.quality.adapter.PlanMonthAdapter;
@@ -28,7 +31,6 @@ import com.xing.module.quality.contract.PlanContract;
 import com.xing.module.quality.db.DbManager;
 import com.xing.module.quality.db.PlanMonthDao;
 import com.xing.module.quality.presenter.PlanPresenter;
-import com.xing.module.quality.view.loading.ProgressDialog;
 import com.xing.module.quality.view.numberbutton.NumberButton;
 
 import java.util.ArrayList;
@@ -122,15 +124,6 @@ public class PlanActivity extends BaseMVPActivity<PlanPresenter> implements Plan
         int i = item.getItemId();
         if (i == android.R.id.home) {
             finish();
-//            List<PlanMonth> planMonths = DbManager.getInstance().getPlanMonthDao().loadAll();
-//            Log.e("TAG", "month-size:" + planMonthList.size());
-//            for (PlanMonth planMonthl : planMonths) {
-//                Log.e("TAG", planMonthl.toString());
-//                List<Plan> plans = DbManager.getInstance().getPlanDao()._queryPlanMonth_PlanList(planMonthl.getId());
-//                for (Plan plan : plans) {
-//                    Log.e("TAG", plan.toString());
-//                }
-//            }
             return true;
         } else if (i == R.id.action_settings) {
             shouwCostomDialog();
@@ -169,7 +162,8 @@ public class PlanActivity extends BaseMVPActivity<PlanPresenter> implements Plan
                     if (lsit != null && lsit.size() > 0) {
                         showUpdateDialog(month);
                     } else {
-                        presenter.getPlanByMonth(month);
+                        String url = SharedPreferenceUtil.read(Constants.USER_LOGIN, Constants.URL, "");
+                        presenter.getPlanByMonth(url, month);
                     }
                     alertDialog.dismiss();
                 }
@@ -189,7 +183,8 @@ public class PlanActivity extends BaseMVPActivity<PlanPresenter> implements Plan
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                presenter.getPlanByMonth(month);
+                String url = SharedPreferenceUtil.read(Constants.USER_LOGIN, Constants.URL, "");
+                presenter.getPlanByMonth(url, month);
             }
         });
         builder.show();

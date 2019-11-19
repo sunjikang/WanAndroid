@@ -27,4 +27,6 @@ public class Constants {
     public static  final String TITLE = "title";
 
 
+    public static final String KEY_COOKIE = "key_cookie";
+    public static final String COOKIE = "cookie";
 }

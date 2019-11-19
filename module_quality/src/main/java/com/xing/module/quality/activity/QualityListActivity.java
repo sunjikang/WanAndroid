@@ -13,16 +13,19 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xing.commonbase.base.BaseActivity;
 import com.xing.commonbase.base.BaseMVPActivity;
+import com.xing.commonbase.constants.Constants;
 import com.xing.commonbase.util.NetworkUtil;
+import com.xing.commonbase.util.SharedPreferenceUtil;
 import com.xing.commonbase.util.ToastUtil;
+import com.xing.commonbase.widget.loading.ProgressDialog;
 import com.xing.module.quality.R;
 import com.xing.module.quality.adapter.QCRecordAdapter;
 import com.xing.module.quality.adapter.QCRecordImageAdapter;
+import com.xing.module.quality.bean.AppInfo;
 import com.xing.module.quality.bean.QCRecord;
 import com.xing.module.quality.contract.QualityContract;
 import com.xing.module.quality.db.DbManager;
 import com.xing.module.quality.presenter.QualityPresenter;
-import com.xing.module.quality.view.loading.ProgressDialog;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -168,6 +171,11 @@ public class QualityListActivity extends BaseMVPActivity<QualityPresenter> imple
             DbManager.getInstance().getQCRecordDao().insertOrReplace(qcRecord);
         }
         qcRecordAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCheckVersionSuccess(AppInfo appInfo) {
+
     }
 
     @Override

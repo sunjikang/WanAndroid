@@ -2,6 +2,7 @@ package com.xing.commonbase.interceptor;
 
 import android.util.Log;
 
+import com.xing.commonbase.constants.Constants;
 import com.xing.commonbase.util.SharedPreferenceUtil;
 
 import java.io.IOException;
@@ -17,11 +18,10 @@ public class AddCookiesInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
 
         Request.Builder builder = chain.request().newBuilder();
-        HashSet<String> perferences = (HashSet) SharedPreferenceUtil.read("cookieData", "cookie", new HashSet<String>());
+        HashSet<String> perferences = (HashSet) SharedPreferenceUtil.read(Constants.KEY_COOKIE, Constants.COOKIE, new HashSet<String>());
         if (perferences != null) {
             for (String cookie : perferences) {
-                builder.addHeader("Cookie", cookie);
-                Log.i("TAG", "添加的cookie是：" + cookie);
+                builder.addHeader(Constants.COOKIE, cookie);
             }
         }
         return chain.proceed(builder.build());

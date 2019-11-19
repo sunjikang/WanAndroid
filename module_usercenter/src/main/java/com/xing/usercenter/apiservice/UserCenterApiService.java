@@ -8,6 +8,7 @@ import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
+import retrofit2.http.Url;
 
 public interface UserCenterApiService {
     /**
@@ -32,9 +33,9 @@ public interface UserCenterApiService {
      * @param password
      * @return
      */
-    @POST("app/login")
+    @POST
     @FormUrlEncoded
-    Observable<BaseResponse<LoginResult>> login(@Field("username") String username,
+    Observable<BaseResponse<LoginResult>> login(@Url String url, @Field("username") String username,
                                                 @Field("password") String password);
 
 

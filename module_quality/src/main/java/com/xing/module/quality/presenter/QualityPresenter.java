@@ -4,8 +4,11 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.xing.commonbase.base.BaseObserver;
+import com.xing.commonbase.constants.Constants;
 import com.xing.commonbase.mvp.BasePresenter;
+import com.xing.commonbase.util.SharedPreferenceUtil;
 import com.xing.module.quality.apiservice.ApiService;
+import com.xing.module.quality.bean.AppInfo;
 import com.xing.module.quality.bean.Plan;
 import com.xing.module.quality.bean.QCRImage;
 import com.xing.module.quality.bean.QCRecord;
@@ -22,6 +25,8 @@ import okhttp3.RequestBody;
 
 public class QualityPresenter extends BasePresenter<QualityContract.View> implements QualityContract.Presenter {
 
+    private static String host = SharedPreferenceUtil.read(Constants.USER_LOGIN, Constants.URL, "");
+
     @Override
     public void doSubmit(final List<QCRecord> list) {
         String data = JSON.toJSONString(list);
@@ -35,7 +40,7 @@ public class QualityPresenter extends BasePresenter<QualityContract.View> implem
                 }
             }
         }
-        addSubscribe(create(ApiService.class).uploadQuality(data, fileMap),
+        addSubscribe(create(ApiService.class).uploadQuality(host + "/quality/qcrecord/uploadqcRecord", data, fileMap),
                 new BaseObserver(getView()) {
                     @Override
                     protected void onSuccess(Object data) {
@@ -52,6 +57,18 @@ public class QualityPresenter extends BasePresenter<QualityContract.View> implem
                     public void onComplete() {
                         super.onComplete();
                         getView().hideLoading();
+                    }
+                });
+    }
+
+    @Override
+    public void doCheckVersion() {
+        addSubscribe(create(ApiService.class).getAppInfo(host + "/app/appinfo/getAppInfo"),
+                new BaseObserver(getView()) {
+
+                    @Override
+                    protected void onSuccess(Object data) {
+                        getView().onCheckVersionSuccess((AppInfo) data);
                     }
                 });
     }

@@ -36,9 +36,9 @@ public class RetrofitClient {
                 .sslSocketFactory(SSLSocketClient.getSSLSocketFactory())
                 .hostnameVerifier(SSLSocketClient.getHostnameVerifier())
                 .addInterceptor(InterceptorUtil.logInterceptor())
-                .addInterceptor(InterceptorUtil.headerInterceptor())
-//                .addInterceptor(new ReceivedCookiesInterceptor())
-//                .addInterceptor(new AddCookiesInterceptor())
+//                .addInterceptor(InterceptorUtil.headerInterceptor())
+                .addInterceptor(new ReceivedCookiesInterceptor())
+                .addInterceptor(new AddCookiesInterceptor())
                 .build();
 
         retrofit = new Retrofit.Builder()

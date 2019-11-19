@@ -11,26 +11,46 @@ public class AppUtil {
         throw new UnsupportedOperationException("cannot be instantiated");
     }
 
-    public static String getAppVersion() {
-        return null;
-    }
-
-    public static String getAppName(Context context) {
-        PackageManager pm = context.getPackageManager();
-        //获取包信息
+    /**
+     * 获取版本名称
+     */
+    public static String getVerName(Context context) {
+        String verName = null;
         try {
-            PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
-            //获取应用 信息
-            ApplicationInfo applicationInfo = packageInfo.applicationInfo;
-            //获取albelRes
-            int labelRes = applicationInfo.labelRes;
-            //返回App的名称
-            return context.getResources().getString(labelRes);
+            verName = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        return null;
+        return verName;
     }
 
+    /**
+     * 获取版本号
+     */
+    public static int getVerCode(Context context) {
+        int verName = 0;
+        try {
+            verName = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(), 0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return verName;
+    }
+
+    /**
+     * 获取包名
+     */
+    public static String getPackageName(Context context) {
+        String verName = null;
+        try {
+            verName = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(), 0).packageName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return verName;
+    }
 
 }

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -49,10 +50,15 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 import com.wx.wheelview.adapter.ArrayWheelAdapter;
 import com.wx.wheelview.widget.WheelView;
+import com.xing.commonbase.constants.Constants;
+import com.xing.commonbase.util.AppUtil;
 import com.xing.commonbase.util.NetworkUtil;
+import com.xing.commonbase.util.SharedPreferenceUtil;
 import com.xing.commonbase.widget.LinearItemDecoration;
+import com.xing.commonbase.widget.loading.ProgressDialog;
 import com.xing.module.quality.adapter.QCRecordCodeAdapter;
 import com.xing.module.quality.adapter.QCRecordImageAdapter;
+import com.xing.module.quality.bean.AppInfo;
 import com.xing.module.quality.bean.QCCode;
 import com.xing.module.quality.bean.QCRImage;
 import com.xing.module.quality.bean.QCRecord;
@@ -66,7 +72,7 @@ import com.xing.commonbase.base.BaseMVPActivity;
 import com.xing.commonbase.mvp.IPresenter;
 import com.xing.commonbase.util.ToastUtil;
 import com.xing.module.quality.R;
-import com.xing.module.quality.view.loading.ProgressDialog;
+import com.xing.module.quality.service.DownloadService;
 import com.xing.module.quality.view.stacklabel.interfaces.OnLabelClickListener;
 
 import org.angmarch.views.NiceSpinner;
@@ -220,6 +226,8 @@ public class QualityActivity extends BaseMVPActivity<QualityPresenter> implement
                         Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             }
         }
+        //获取版本信息
+        presenter.doCheckVersion();
         if (DbManager.getInstance().getQCCodeDao().count() <= 0) {
             //初始化code字典库
             List<QCCode> qcCodeList = new LinkedList<>();
@@ -574,6 +582,27 @@ public class QualityActivity extends BaseMVPActivity<QualityPresenter> implement
             DbManager.getInstance().getQCRecordDao().insertOrReplace(qcRecord);
         }
         ToastUtil.show(this, "上传成功");
+    }
+
+    @Override
+    public void onCheckVersionSuccess(final AppInfo appInfo) {
+        Log.e("TAG",AppUtil.getPackageName(this));
+        if (AppUtil.getVerCode(this) < Integer.parseInt(appInfo.getVerCode())) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("更新提示");
+            builder.setMessage(appInfo.getAppDescribe());
+            builder.setNegativeButton("取消", null);
+            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //更新
+                    Intent intent = new Intent(QualityActivity.this, DownloadService.class);
+                    intent.putExtra(DownloadService.DOWNLOAD_PATH, appInfo.getDownUrl());
+                    QualityActivity.this.startService(intent);
+                }
+            });
+            builder.show();
+        }
     }
 
     private List<String> getStrListForReasonName(List<QCCode> list) {

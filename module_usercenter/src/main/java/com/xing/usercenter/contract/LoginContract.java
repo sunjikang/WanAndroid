@@ -10,6 +10,6 @@ public interface LoginContract {
     }
 
     interface Presenter {
-        void login(String phone, String password);
+        void login(String url, String phone, String password);
     }
 }

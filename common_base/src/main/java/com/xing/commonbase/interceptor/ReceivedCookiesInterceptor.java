@@ -2,6 +2,7 @@ package com.xing.commonbase.interceptor;
 
 import android.util.Log;
 
+import com.xing.commonbase.constants.Constants;
 import com.xing.commonbase.util.SharedPreferenceUtil;
 
 import java.io.IOException;
@@ -20,10 +21,9 @@ public class ReceivedCookiesInterceptor implements Interceptor {
 
             HashSet<String> cookies = new HashSet<>();
             for (String header : originalResponse.headers("Set-Cookie")) {
-                Log.i("TAG", "拦截的cookie是：" + header);
                 cookies.add(header);
             }
-            SharedPreferenceUtil.write("cookieData", "cookie", cookies);
+            SharedPreferenceUtil.write(Constants.KEY_COOKIE, Constants.COOKIE, cookies);
         }
         return originalResponse;
     }

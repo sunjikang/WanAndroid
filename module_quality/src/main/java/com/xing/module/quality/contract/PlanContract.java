@@ -11,6 +11,6 @@ public interface PlanContract {
     }
 
     interface Presenter {
-        void getPlanByMonth(String month);
+        void getPlanByMonth(String url,String month);
     }
 }

@@ -12,8 +12,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
         implements LoginContract.Presenter {
 
     @Override
-    public void login(String username, String password) {
-        addSubscribe(create(UserCenterApiService.class).login(username, password), new BaseObserver<LoginResult>(getView()) {
+    public void login(String url, String username, String password) {
+        addSubscribe(create(UserCenterApiService.class).login(url+"/app/login", username, password), new BaseObserver<LoginResult>(getView()) {
 
             @Override
             protected void onSuccess(LoginResult data) {
@@ -37,11 +37,12 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
 
     /**
      * 保存手机号和密码
-     *
+     * @param url
      * @param username
      * @param password
      */
-    public void saveUsernamePassword(String username, String password) {
+    public void saveUsernamePassword(String url, String username, String password) {
+        SharedPreferenceUtil.write(Constants.USER_LOGIN, Constants.URL, url);
         SharedPreferenceUtil.write(Constants.USER_LOGIN, Constants.USERNAME, username);
         SharedPreferenceUtil.write(Constants.USER_LOGIN, Constants.PASSWORD, password);
     }
