@@ -597,7 +597,9 @@ public class QualityActivity extends BaseMVPActivity<QualityPresenter> implement
                 public void onClick(DialogInterface dialog, int which) {
                     //更新
                     Intent intent = new Intent(QualityActivity.this, DownloadService.class);
-                    intent.putExtra(DownloadService.DOWNLOAD_PATH, appInfo.getDownUrl());
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(DownloadService.APP_INFO,appInfo);
+                    intent.putExtras(bundle);
                     QualityActivity.this.startService(intent);
                 }
             });

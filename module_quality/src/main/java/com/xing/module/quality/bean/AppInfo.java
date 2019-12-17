@@ -3,12 +3,13 @@ package com.xing.module.quality.bean;
 
 import android.support.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * app_info 实体类
  */
-public class AppInfo {
+public class AppInfo implements Serializable {
 
     private Long id;
 

@@ -20,6 +20,7 @@ import com.xing.commonbase.constants.Constants;
 import com.xing.commonbase.util.AppUtil;
 import com.xing.commonbase.util.SharedPreferenceUtil;
 import com.xing.commonbase.util.ToastUtil;
+import com.xing.module.quality.bean.AppInfo;
 
 import java.io.File;
 
@@ -39,7 +40,7 @@ public class DownloadService extends Service {
     //百度音乐测试地址
     String testLink = "http://gdown.baidu.com/data/wisegame/fd84b7f6746f0b18/baiduyinyue_4802.apk";
 
-    public static final String DOWNLOAD_PATH = "download_path";
+    public static final String APP_INFO = "app_info";
 
     @Nullable
     @Override
@@ -50,8 +51,8 @@ public class DownloadService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String host = SharedPreferenceUtil.read(Constants.USER_LOGIN, Constants.URL, "");
-        String downloadLink = intent.getExtras().getString(DOWNLOAD_PATH);
-        initDownManager(host + "/app/appinfo/download?downUrl=" + downloadLink.replaceAll("\\\\","/"));
+        AppInfo appInfo = (AppInfo) intent.getExtras().get(APP_INFO);
+        initDownManager(host + "/app/appinfo/download?id=" + appInfo.getId() + "&downUrl=" + appInfo.getDownUrl().replaceAll("\\\\", "/"));
 //        initDownManager(testLink);
         return super.onStartCommand(intent, flags, startId);
     }
@@ -60,7 +61,7 @@ public class DownloadService extends Service {
      * 初始化下载器
      **/
     private void initDownManager(String downloadLink) {
-        Log.e("TAG",downloadLink);
+        Log.e("TAG", downloadLink);
         manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         receiver = new DownloadCompleteReceiver();
         //设置下载地址
