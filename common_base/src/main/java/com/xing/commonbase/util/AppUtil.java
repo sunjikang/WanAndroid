@@ -36,6 +36,7 @@ public class AppUtil {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+
         return verName;
     }
 
@@ -51,6 +52,11 @@ public class AppUtil {
             e.printStackTrace();
         }
         return verName;
+    }
+
+    public static String getAppName(Context context) {
+        PackageManager pm = context.getPackageManager();
+        return context.getApplicationInfo().loadLabel(pm).toString();
     }
 
 }
