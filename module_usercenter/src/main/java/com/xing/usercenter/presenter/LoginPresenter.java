@@ -1,5 +1,7 @@
 package com.xing.usercenter.presenter;
 
+import android.text.TextUtils;
+
 import com.xing.commonbase.base.BaseObserver;
 import com.xing.commonbase.constants.Constants;
 import com.xing.commonbase.mvp.BasePresenter;
@@ -12,13 +14,33 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
         implements LoginContract.Presenter {
 
     @Override
-    public void login(String url, String username, String password) {
-        addSubscribe(create(UserCenterApiService.class).login(url+"/app/login", username, password), new BaseObserver<LoginResult>(getView()) {
+    public void login(String username, String password, String code, String captchaId) {
+        addSubscribe(create(UserCenterApiService.class).login(username, password, code, captchaId), new BaseObserver<String>(getView()) {
 
             @Override
-            protected void onSuccess(LoginResult data) {
+            protected void onSuccess(String data) {
                 if (isViewAttached()) {
-                    getView().loginSuccess(data);
+                    saveCookie(data);
+                    getView().loginSuccess();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getView().loginError();
+            }
+        });
+    }
+
+    @Override
+    public void init() {
+        addSubscribe(create(UserCenterApiService.class).init(), new BaseObserver<String>(getView()) {
+
+            @Override
+            protected void onSuccess(String data) {
+                if (isViewAttached()) {
+                    getView().initSuccess(data);
                 }
             }
         });
@@ -29,25 +51,10 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
      *
      * @param result
      */
-    private void saveCookie(LoginResult result) {
-        if (result != null) {
-            SharedPreferenceUtil.write(Constants.File_TOKEN, Constants.ACCESS_TOKEN, result.getToken());
+    private void saveCookie(String result) {
+        if (!TextUtils.isEmpty(result)) {
+            SharedPreferenceUtil.write(Constants.File_TOKEN, Constants.ACCESS_TOKEN, result);
         }
     }
 
-    /**
-     * 保存手机号和密码
-     * @param url
-     * @param username
-     * @param password
-     */
-    public void saveUsernamePassword(String url, String username, String password) {
-        SharedPreferenceUtil.write(Constants.USER_LOGIN, Constants.URL, url);
-        SharedPreferenceUtil.write(Constants.USER_LOGIN, Constants.USERNAME, username);
-        SharedPreferenceUtil.write(Constants.USER_LOGIN, Constants.PASSWORD, password);
-    }
-
-    public String readUsernamePassword(String key) {
-        return SharedPreferenceUtil.read(Constants.USER_LOGIN, key, "");
-    }
 }

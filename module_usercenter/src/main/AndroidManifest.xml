@@ -23,6 +23,9 @@
         <activity
             android:name="com.xing.usercenter.activity.RegisterActivity"
             android:exported="false" />
+        <activity
+            android:name="com.xing.usercenter.activity.SettingActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -32,7 +32,7 @@ android {
         variant.outputs.all { output ->
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                outputFileName = "hzcs_quality_${rootProject.ext.android.versionCode}_${rootProject.ext.android.versionName}_${new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))}.apk"
+                outputFileName = "hzcs_${rootProject.ext.android.versionCode}_${rootProject.ext.android.versionName}_${new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))}.apk"
             }
         }
     }
@@ -42,9 +42,10 @@ dependencies {
     implementation project(':common_base')
     if (!isRunAlone.toBoolean()) {
         implementation project(':module_usercenter')
-        implementation project(':module_quality')
-//        implementation project(':module_main')
+        implementation project(':module_main')
 //        implementation project(':module_gank')
+//        implementation project(':module_quality')
+        implementation project(':module_ticket')
     }
     // 如果 app 主工程中使用了 Arouter 注解，那就需要这个 annotationProcessor
     annotationProcessor rootProject.ext.dependencies['arouter-compiler']

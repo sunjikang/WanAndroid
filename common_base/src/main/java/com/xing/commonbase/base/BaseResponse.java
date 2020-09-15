@@ -7,77 +7,37 @@ package com.xing.commonbase.base;
 
 public class BaseResponse<T> {
 
-    private int errorCode = -1;
-    private String errorMsg;
-    private T data;
     /**
-     * 兼容 gank api
+     * 成功标志
      */
-    private T results;
-    private boolean error = true;
+    private boolean success;
 
     /**
-     * 兼容quality
-     * @return
+     * 消息
      */
-    private boolean status;
-    private String code;
     private String message;
 
-    public int getErrorCode() {
-        return errorCode;
+    /**
+     * 返回代码
+     */
+    private Integer code;
+
+    /**
+     * 时间戳
+     */
+    private long timestamp = System.currentTimeMillis();
+
+    /**
+     * 结果对象
+     */
+    private T result;
+
+    public boolean isSuccess() {
+        return success;
     }
 
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorMsg() {
-        return errorMsg;
-    }
-
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    public boolean isError() {
-        return error;
-    }
-
-    public T getResults() {
-        return results;
-    }
-
-    public void setResults(T results) {
-        this.results = results;
-    }
-
-    public void setError(boolean error) {
-        this.error = error;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
     public String getMessage() {
@@ -88,17 +48,38 @@ public class BaseResponse<T> {
         this.message = message;
     }
 
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public T getResult() {
+        return result;
+    }
+
+    public void setResult(T result) {
+        this.result = result;
+    }
+
     @Override
     public String toString() {
         return "BaseResponse{" +
-                "errorCode=" + errorCode +
-                ", errorMsg='" + errorMsg + '\'' +
-                ", data=" + data +
-                ", results=" + results +
-                ", error=" + error +
-                ", status=" + status +
-                ", code='" + code + '\'' +
+                "success=" + success +
                 ", message='" + message + '\'' +
+                ", code=" + code +
+                ", timestamp=" + timestamp +
+                ", result=" + result +
                 '}';
     }
 }

@@ -11,6 +11,7 @@ import com.xing.main.bean.SearchHotKey;
 import com.xing.main.bean.SearchResult;
 import com.xing.main.bean.SystemArticleResult;
 import com.xing.main.bean.SystemResult;
+import com.xing.main.bean.UserResult;
 import com.xing.main.bean.WeChatArticleResult;
 import com.xing.main.bean.WeChatAuthorResult;
 
@@ -142,4 +143,10 @@ public interface MainApiService {
     @GET("lg/collect/list/{page}/json")
     Observable<BaseResponse<FavoriteResult>> getFavoriteList(@Path("page") int page);
 
+
+    /**
+     * 获取收藏文章列表
+     */
+    @GET("xboot/user/info")
+    Observable<BaseResponse<UserResult>> getUserInfo();
 }

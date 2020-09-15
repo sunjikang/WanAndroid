@@ -3,19 +3,27 @@ package com.xing.main.fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.xing.commonbase.base.BaseFragment;
+import com.xing.commonbase.base.BaseMVPFragment;
 import com.xing.commonbase.util.BlurUtil;
+import com.xing.commonbase.util.ToastUtil;
 import com.xing.commonbase.widget.ItemView;
 import com.xing.commonbase.widget.ZoomScrollView;
 import com.xing.main.R;
 import com.xing.main.annotation.UserLoginTrace;
+import com.xing.main.bean.UserResult;
+import com.xing.main.contract.HomeContract;
+import com.xing.main.contract.MineContract;
+import com.xing.main.presenter.HomePresenter;
+import com.xing.main.presenter.MinePresenter;
 
-public class MineFragment extends BaseFragment implements View.OnClickListener {
+public class MineFragment extends BaseMVPFragment<MinePresenter> implements MineContract.View,  View.OnClickListener {
 
     private ImageView backImgView;
     private ZoomScrollView scrollView;
@@ -54,12 +62,17 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         meiziItemView.setOnClickListener(this);
         aboutItemView.setOnClickListener(this);
 
-
+        presenter.getUserInfo();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+    }
+
+    @Override
+    protected MinePresenter createPresenter() {
+        return new MinePresenter();
     }
 
     @Override
@@ -95,5 +108,20 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         ARouter.getInstance()
                 .build("/main/AboutActivity")
                 .navigation();
+    }
+
+    @Override
+    public void onUserInfo(UserResult userResult) {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
     }
 }

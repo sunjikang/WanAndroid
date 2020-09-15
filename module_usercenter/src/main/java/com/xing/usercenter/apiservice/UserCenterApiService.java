@@ -7,8 +7,8 @@ import com.xing.usercenter.bean.RegisterResult;
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Url;
 
 public interface UserCenterApiService {
     /**
@@ -33,10 +33,19 @@ public interface UserCenterApiService {
      * @param password
      * @return
      */
-    @POST
+    @POST("xboot/login")
     @FormUrlEncoded
-    Observable<BaseResponse<LoginResult>> login(@Url String url, @Field("username") String username,
-                                                @Field("password") String password);
+    Observable<BaseResponse<String>> login(@Field("username") String username,
+                                                @Field("password") String password,
+                                                @Field("code") String code,
+                                                @Field("captchaId") String captchaId);
 
+    /**
+     * 初始化验证码
+     *
+     * @return
+     */
+    @GET("xboot/common/captcha/init")
+    Observable<BaseResponse<String>> init();
 
 }
