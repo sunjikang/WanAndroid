@@ -14,7 +14,7 @@ import com.xing.commonbase.util.StatusBarUtil;
 import com.xing.main.R;
 import com.xing.main.fragment.HomeFragment;
 import com.xing.main.fragment.MineFragment;
-import com.xing.main.fragment.ProjectFragment;
+import com.xing.main.fragment.HandleFragment;
 import com.xing.main.fragment.SystemFragment;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
@@ -33,7 +33,7 @@ public class MainActivity extends BaseActivity {
     private RadioButton homeRadioButton;
     private RadioButton mineRadioButton;
     private int currentSelectedId = R.id.rb_home;
-    private ProjectFragment projectFragment;
+    private HandleFragment projectFragment;
     private SystemFragment systemFragment;
 
     @Override
@@ -106,7 +106,7 @@ public class MainActivity extends BaseActivity {
         ft.add(R.id.fl_main_container, homeFragment);
         fragmentList.add(homeFragment);
 
-        projectFragment = new ProjectFragment();
+        projectFragment = new HandleFragment();
         ft.add(R.id.fl_main_container, projectFragment);
         fragmentList.add(projectFragment);
 

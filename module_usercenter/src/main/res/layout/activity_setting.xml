@@ -23,6 +23,7 @@
             android:layout_marginTop="20dp"
             android:drawablePadding="10dp"
             android:hint="@string/please_input_host"
+            android:text="http://10.2.8.154:8888/"
             android:imeOptions="actionNext"
             android:nextFocusForward="@+id/et_forget_pwd_verify_code" />
 

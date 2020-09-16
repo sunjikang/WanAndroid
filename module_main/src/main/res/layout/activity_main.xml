@@ -46,7 +46,7 @@
             android:button="@null"
             android:drawableTop="@drawable/selector_menu_project"
             android:gravity="center"
-            android:text="项目"
+            android:text="办理"
             android:textSize="10sp" />
 
 

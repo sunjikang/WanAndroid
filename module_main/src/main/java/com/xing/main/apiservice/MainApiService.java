@@ -14,6 +14,8 @@ import com.xing.main.bean.SystemResult;
 import com.xing.main.bean.UserResult;
 import com.xing.main.bean.WeChatArticleResult;
 import com.xing.main.bean.WeChatAuthorResult;
+import com.xing.main.bean.handle.ActPage;
+import com.xing.main.bean.handle.TodoResult;
 
 import java.util.List;
 
@@ -145,8 +147,20 @@ public interface MainApiService {
 
 
     /**
-     * 获取收藏文章列表
+     * 获取用户详情
      */
     @GET("xboot/user/info")
     Observable<BaseResponse<UserResult>> getUserInfo();
+
+    /**
+     * 获取带办列表
+     */
+    @GET("xboot/actTask/todoList")
+    Observable<BaseResponse<ActPage<TodoResult>>> getTodoList(@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
+
+    /**
+     * 获取带办列表
+     */
+    @GET("xboot/actTask/doneList")
+    Observable<BaseResponse<ActPage<TodoResult>>> getDoneList(@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 }
