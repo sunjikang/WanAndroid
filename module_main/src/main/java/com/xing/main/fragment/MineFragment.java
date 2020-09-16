@@ -9,10 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bumptech.glide.Glide;
 import com.xing.commonbase.base.BaseFragment;
 import com.xing.commonbase.base.BaseMVPFragment;
 import com.xing.commonbase.util.BlurUtil;
 import com.xing.commonbase.util.ToastUtil;
+import com.xing.commonbase.widget.CircleImageView;
 import com.xing.commonbase.widget.ItemView;
 import com.xing.commonbase.widget.ZoomScrollView;
 import com.xing.main.R;
@@ -25,8 +27,12 @@ import com.xing.main.presenter.MinePresenter;
 
 public class MineFragment extends BaseMVPFragment<MinePresenter> implements MineContract.View,  View.OnClickListener {
 
-    private ImageView backImgView;
     private ZoomScrollView scrollView;
+    private ImageView backImgView;
+    private CircleImageView circleImageView;
+    private TextView nicknameView;
+    private TextView departmentView;
+
     private View avatarLayout;
     private TextView meiziView;
     private ItemView favoriteItemView;
@@ -44,6 +50,11 @@ public class MineFragment extends BaseMVPFragment<MinePresenter> implements Mine
     @Override
     protected void initView(View rootView) {
         backImgView = rootView.findViewById(R.id.iv_avatar_background);
+        circleImageView = rootView.findViewById(R.id.civ_avatar);
+        nicknameView = rootView.findViewById(R.id.tv_nickname);
+        departmentView = rootView.findViewById(R.id.tv_department);
+
+
         scrollView = rootView.findViewById(R.id.sv_scroll);
 //        avatarLayout = rootView.findViewById(R.id.rl_layout);
         favoriteItemView = rootView.findViewById(R.id.iv_mine_favorite);
@@ -112,7 +123,12 @@ public class MineFragment extends BaseMVPFragment<MinePresenter> implements Mine
 
     @Override
     public void onUserInfo(UserResult userResult) {
-
+        if(!TextUtils.isEmpty(userResult.getAvatar())){
+            Glide.with(mContext).load(userResult.getAvatar()).into(backImgView);
+            Glide.with(mContext).load(userResult.getAvatar()).into(circleImageView);
+        }
+        nicknameView.setText(userResult.getNickname());
+        departmentView.setText(userResult.getDepartmentTitle());
     }
 
     @Override

@@ -63,22 +63,22 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_nickname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:ellipsize="end"
                         android:maxLength="8"
-                        android:text="我有一个小毛驴"
                         android:textColor="@color/black_333"
                         android:textSize="18sp" />
 
                     <TextView
+                        android:id="@+id/tv_department"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginTop="5dp"
                         android:ellipsize="end"
-                        android:text="做出成绩来，全世界都会和颜悦色。"
                         android:textColor="@color/black_999"
                         android:textSize="14sp" />
 
