@@ -24,6 +24,7 @@ import com.xing.commonbase.http.RetrofitClient;
 import com.xing.commonbase.manager.UserLoginManager;
 import com.xing.commonbase.util.SharedPreferenceUtil;
 import com.xing.commonbase.util.SoftKeyboardUtil;
+import com.xing.commonbase.util.ToastUtil;
 import com.xing.commonbase.widget.loading.ProgressDialog;
 import com.xing.usercenter.R;
 import com.xing.usercenter.bean.LoginResult;
@@ -72,6 +73,7 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
         super.initData();
         // 添加下划线
         registerTxtView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        settingTxtView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         //初始化用户名密码
         String cacheUsername = SharedPreferenceUtil.read(Constants.USER_LOGIN, Constants.USERNAME, "");
         String cachePassword = SharedPreferenceUtil.read(Constants.USER_LOGIN, Constants.PASSWORD, "");
@@ -83,6 +85,7 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
             passwordEditText.setText(cachePassword);
             passwordEditText.setSelection(cachePassword.length());
         }
+        //添加点击事件
         loginBtn.setOnClickListener(this);//登录按钮
         registerTxtView.setOnClickListener(this);//去注册
         settingTxtView.setOnClickListener(this);//去设置
@@ -110,7 +113,11 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
                 return false;
             }
         });
-        //初始化获取验证码
+        String host = SharedPreferenceUtil.read(Constants.HOST, Constants.HOST, "");
+        if (TextUtils.isEmpty(host)) {
+            Toast.makeText(mContext, R.string.please_input_host, Toast.LENGTH_LONG).show();
+            return;
+        }
         presenter.init();
     }
 
@@ -124,6 +131,11 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
         } else if (i == R.id.tv_setting) {
             gotoSettingActivity();
         } else if (i == R.id.iv_login_captcha_img) {
+            String host = SharedPreferenceUtil.read(Constants.HOST, Constants.HOST, "");
+            if (TextUtils.isEmpty(host)) {
+                Toast.makeText(mContext, R.string.please_input_host, Toast.LENGTH_LONG).show();
+                return;
+            }
             presenter.init();
         }
     }
@@ -133,6 +145,11 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
      * xing2019 / 123456
      */
     private void login() {
+        String host = SharedPreferenceUtil.read(Constants.HOST, Constants.HOST, "");
+        if (TextUtils.isEmpty(host)) {
+            Toast.makeText(mContext, R.string.please_input_host, Toast.LENGTH_LONG).show();
+            return;
+        }
         String username = usernameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
         String code = codeEditText.getText().toString().trim();
@@ -174,7 +191,8 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
     public void initSuccess(String captchaId) {
 //        presenter.draw(captchaId);
         this.captchaId = captchaId;
-        Glide.with(mContext).load(RetrofitClient.API_HOST + "xboot/common/captcha/draw/" + this.captchaId).into(captchaImg);
+        String host = SharedPreferenceUtil.read(Constants.HOST, Constants.HOST, "");
+        Glide.with(mContext).load(host + "xboot/common/captcha/draw/" + this.captchaId).into(captchaImg);
     }
 
 
@@ -225,4 +243,5 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
         passwordEditText = null;
         pwdVisibleCheckBox = null;
     }
+
 }

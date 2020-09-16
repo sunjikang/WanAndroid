@@ -20,7 +20,7 @@ import com.xing.usercenter.presenter.RegisterPresenter;
 
 @Route(path = "/user/SettingActivity")
 public class SettingActivity extends BaseActivity{
-    EditText ipEditText;
+    EditText hostEditText;
     EditText onlyEditText;
     Button saveBtn;
 
@@ -41,9 +41,12 @@ public class SettingActivity extends BaseActivity{
                 finish();
             }
         });
-        ipEditText = findViewById(R.id.et_setting_ip);
+        hostEditText = findViewById(R.id.et_setting_host);
         onlyEditText = findViewById(R.id.et_setting_only);
         saveBtn = findViewById(R.id.btn_save);
+
+        String host = SharedPreferenceUtil.read(Constants.HOST, Constants.HOST, "");
+        hostEditText.setText(host);
     }
 
 
@@ -53,12 +56,12 @@ public class SettingActivity extends BaseActivity{
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String ip = ipEditText.getText().toString().trim();
-                if (TextUtils.isEmpty(ip)) {
+                String host = hostEditText.getText().toString().trim();
+                if (TextUtils.isEmpty(host)) {
                     ToastUtil.show(mContext, "请输入访问地址");
                     return;
                 }
-                SharedPreferenceUtil.write(Constants.HOST, Constants.HOST, ip);
+                SharedPreferenceUtil.write(Constants.HOST, Constants.HOST, host);
                 finish();
             }
         });
