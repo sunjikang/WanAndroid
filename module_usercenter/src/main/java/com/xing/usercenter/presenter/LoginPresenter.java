@@ -20,7 +20,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
             @Override
             protected void onSuccess(String data) {
                 if (isViewAttached()) {
-                    saveCookie(data);
+                    saveToken(data);
                     getView().loginSuccess();
                 }
             }
@@ -47,11 +47,11 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
     }
 
     /**
-     * 保存 cookie 至本地
+     * 保存 token 至本地
      *
      * @param result
      */
-    private void saveCookie(String result) {
+    private void saveToken(String result) {
         if (!TextUtils.isEmpty(result)) {
             SharedPreferenceUtil.write(Constants.File_TOKEN, Constants.ACCESS_TOKEN, result);
         }

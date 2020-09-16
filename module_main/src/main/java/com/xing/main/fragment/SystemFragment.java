@@ -60,7 +60,7 @@ public class SystemFragment extends BaseMVPFragment<SystemPresenter> implements 
         /**
          * 请求体系分类数据
          */
-        presenter.getSystemList();
+//        presenter.getSystemList();
     }
 
     @Override

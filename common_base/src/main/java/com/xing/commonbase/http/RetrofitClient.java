@@ -38,9 +38,10 @@ public class RetrofitClient {
                 .sslSocketFactory(SSLSocketClient.getSSLSocketFactory())
                 .hostnameVerifier(SSLSocketClient.getHostnameVerifier())
                 .addInterceptor(InterceptorUtil.logInterceptor())
+                .addInterceptor(InterceptorUtil.headerTokenInterceptor())
 //                .addInterceptor(InterceptorUtil.headerInterceptor())
-                .addInterceptor(new ReceivedCookiesInterceptor())
-                .addInterceptor(new AddCookiesInterceptor())
+//                .addInterceptor(new ReceivedCookiesInterceptor())
+//                .addInterceptor(new AddCookiesInterceptor())
                 .build();
         //记录访问地址
         String host = SharedPreferenceUtil.read(Constants.HOST, Constants.HOST, "http://10.2.8.154:8888/");

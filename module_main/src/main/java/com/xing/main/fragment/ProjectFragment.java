@@ -52,7 +52,7 @@ public class ProjectFragment extends BaseMVPFragment<ProjectPresenter>
 
     @Override
     protected void initData() {
-        presenter.getProjectTabs();
+//        presenter.getProjectTabs();
     }
 
     @Override

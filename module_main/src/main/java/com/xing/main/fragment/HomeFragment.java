@@ -112,13 +112,13 @@ public class HomeFragment extends BaseMVPFragment<HomePresenter> implements Home
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
         // 请求 banner 数据
-        presenter.getBanner();
+//        presenter.getBanner();
 
         // 请求微信公众号列表
-        presenter.getWeChatAuthors();
+//        presenter.getWeChatAuthors();
 
         // 请求首页文章列表
-        presenter.getHomeArticles(page);
+//        presenter.getHomeArticles(page);
         setListener();
     }
 
@@ -149,7 +149,7 @@ public class HomeFragment extends BaseMVPFragment<HomePresenter> implements Home
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
-                presenter.getHomeArticles(page);
+//                presenter.getHomeArticles(page);
 //                refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
             }
         });

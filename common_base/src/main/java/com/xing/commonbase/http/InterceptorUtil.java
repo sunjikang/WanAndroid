@@ -2,6 +2,9 @@ package com.xing.commonbase.http;
 
 import android.text.TextUtils;
 
+import com.xing.commonbase.constants.Constants;
+import com.xing.commonbase.util.SharedPreferenceUtil;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -37,4 +40,22 @@ public class InterceptorUtil {
     public static Interceptor logInterceptor() {
         return new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
     }
+
+    public static Interceptor headerTokenInterceptor() {
+        return new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                String token = SharedPreferenceUtil.read(Constants.File_TOKEN, Constants.ACCESS_TOKEN, "");
+                if (TextUtils.isEmpty(token)) {
+                    Request originalRequest = chain.request();
+                    return chain.proceed(originalRequest);
+                } else {
+                    Request originalRequest = chain.request();
+                    Request updateRequest = originalRequest.newBuilder().header("accessToken", token).build();
+                    return chain.proceed(updateRequest);
+                }
+            }
+        };
+    }
+
 }
