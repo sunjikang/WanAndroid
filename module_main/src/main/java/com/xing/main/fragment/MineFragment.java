@@ -10,22 +10,21 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
-import com.xing.commonbase.base.BaseFragment;
 import com.xing.commonbase.base.BaseMVPFragment;
+import com.xing.commonbase.constants.Constants;
 import com.xing.commonbase.util.BlurUtil;
-import com.xing.commonbase.util.ToastUtil;
+import com.xing.commonbase.util.SharedPreferenceUtil;
 import com.xing.commonbase.widget.CircleImageView;
 import com.xing.commonbase.widget.ItemView;
 import com.xing.commonbase.widget.ZoomScrollView;
 import com.xing.main.R;
+import com.xing.main.activity.MainActivity;
 import com.xing.main.annotation.UserLoginTrace;
-import com.xing.main.bean.UserResult;
-import com.xing.main.contract.HomeContract;
+import com.xing.main.bean.xboot.User;
 import com.xing.main.contract.MineContract;
-import com.xing.main.presenter.HomePresenter;
 import com.xing.main.presenter.MinePresenter;
 
-public class MineFragment extends BaseMVPFragment<MinePresenter> implements MineContract.View,  View.OnClickListener {
+public class MineFragment extends BaseMVPFragment<MinePresenter> implements MineContract.View, View.OnClickListener {
 
     private ZoomScrollView scrollView;
     private ImageView backImgView;
@@ -38,6 +37,7 @@ public class MineFragment extends BaseMVPFragment<MinePresenter> implements Mine
     private ItemView favoriteItemView;
     private ItemView meiziItemView;
     private ItemView aboutItemView;
+    private ItemView logoutItemView;
 
     public MineFragment() {
     }
@@ -60,6 +60,7 @@ public class MineFragment extends BaseMVPFragment<MinePresenter> implements Mine
         favoriteItemView = rootView.findViewById(R.id.iv_mine_favorite);
         meiziItemView = rootView.findViewById(R.id.iv_mine_meizi);
         aboutItemView = rootView.findViewById(R.id.iv_mine_about);
+        logoutItemView = rootView.findViewById(R.id.iv_mine_logout);
     }
 
     @Override
@@ -72,6 +73,7 @@ public class MineFragment extends BaseMVPFragment<MinePresenter> implements Mine
         favoriteItemView.setOnClickListener(this);
         meiziItemView.setOnClickListener(this);
         aboutItemView.setOnClickListener(this);
+        logoutItemView.setOnClickListener(this);
 
         presenter.getUserInfo();
     }
@@ -99,6 +101,8 @@ public class MineFragment extends BaseMVPFragment<MinePresenter> implements Mine
             gotoFavoriteActivity();
         } else if (v.getId() == R.id.iv_mine_meizi) {
             gotoMeiziActivity();
+        } else if (v.getId() == R.id.iv_mine_logout) {
+            gotoLoginActivity();
         }
     }
 
@@ -121,14 +125,24 @@ public class MineFragment extends BaseMVPFragment<MinePresenter> implements Mine
                 .navigation();
     }
 
+    /**
+     * 跳转登录界面
+     */
+    private void gotoLoginActivity() {
+        MainActivity mainActivity = (MainActivity) mContext;
+        mainActivity.finish();
+        SharedPreferenceUtil.write(Constants.File_TOKEN, Constants.ACCESS_TOKEN, "");
+        ARouter.getInstance().build("/user/LoginActivity").navigation();
+    }
+
     @Override
-    public void onUserInfo(UserResult userResult) {
-        if(!TextUtils.isEmpty(userResult.getAvatar())){
-            Glide.with(mContext).load(userResult.getAvatar()).into(backImgView);
-            Glide.with(mContext).load(userResult.getAvatar()).into(circleImageView);
+    public void onUserInfo(User user) {
+        if (!TextUtils.isEmpty(user.getAvatar())) {
+            Glide.with(mContext).load(user.getAvatar()).into(backImgView);
+            Glide.with(mContext).load(user.getAvatar()).into(circleImageView);
         }
-        nicknameView.setText(userResult.getNickname());
-        departmentView.setText(userResult.getDepartmentTitle());
+        nicknameView.setText(user.getNickname());
+        departmentView.setText(user.getDepartmentTitle());
     }
 
     @Override

@@ -44,7 +44,7 @@ public class RetrofitClient {
 //                .addInterceptor(new AddCookiesInterceptor())
                 .build();
         //记录访问地址
-        String host = SharedPreferenceUtil.read(Constants.HOST, Constants.HOST, "http://10.2.8.154:8888/");
+        String host = SharedPreferenceUtil.read(Constants.HOST, Constants.HOST, "");
         retrofit = new Retrofit.Builder()
                 .baseUrl(host)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

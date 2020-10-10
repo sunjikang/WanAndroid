@@ -1,17 +1,12 @@
 package com.xing.main.contract;
 
 import com.xing.commonbase.mvp.IView;
-import com.xing.main.bean.BannerResult;
-import com.xing.main.bean.HomeArticleResult;
-import com.xing.main.bean.UserResult;
-import com.xing.main.bean.WeChatAuthorResult;
-
-import java.util.List;
+import com.xing.main.bean.xboot.User;
 
 public interface MineContract {
 
     interface View extends IView {
-        void onUserInfo(UserResult userResult);
+        void onUserInfo(User user);
     }
 
     interface Presenter {

@@ -1,4 +1,4 @@
-package com.xing.main.bean.handle;
+package com.xing.main.bean.xboot;
 
 public class TodoResult {
     private String id;

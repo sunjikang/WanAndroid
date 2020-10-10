@@ -14,9 +14,9 @@
         android:background="@color/gray_f5"
         app:zoomMax="120dp">
 
-        <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <ImageView
@@ -111,10 +111,16 @@
                 android:id="@+id/iv_mine_about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:dividerVisible="false"
                 app:itemTitle="@string/about"
                 app:leftIcon="@drawable/ic_mine_about" />
 
+            <com.xing.commonbase.widget.ItemView
+                android:id="@+id/iv_mine_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerVisible="false"
+                app:itemTitle="@string/logout"
+                app:leftIcon="@drawable/ic_mine_about" />
         </LinearLayout>
 
     </com.xing.commonbase.widget.ZoomScrollView>

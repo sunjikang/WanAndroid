@@ -35,8 +35,6 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
 
     @Override
     public void init() {
-        //初始化时清空token
-        SharedPreferenceUtil.write(Constants.File_TOKEN, Constants.ACCESS_TOKEN, "");
         addSubscribe(create(UserCenterApiService.class).init(), new BaseObserver<String>(getView()) {
 
             @Override

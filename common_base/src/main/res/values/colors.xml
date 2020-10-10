@@ -13,4 +13,15 @@
     <color name="black_333">#ff333333</color>
     <color name="black_999">#ff999999</color>
     <color name="white_fc">#fffcfcfc</color>
+
+    <color name="green">#19be6b</color>
+    <color name="green_on">#19ce6b</color>
+    <color name="blue">#2d8cf0</color>
+    <color name="blue_on">#2dadf0</color>
+    <color name="blue_light">#5cadff</color>
+    <color name="blue_light_on">#5cbcff</color>
+    <color name="orange">#ff9900</color>
+    <color name="orange_on">#ffa900</color>
+    <color name="red">#ed4014</color>
+    <color name="red_on">#ed5c14</color>
 </resources>

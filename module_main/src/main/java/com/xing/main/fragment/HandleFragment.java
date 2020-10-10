@@ -67,9 +67,9 @@ public class HandleFragment extends BaseFragment {
 
         mFragment = new ArrayList<>();
         mFragment.add(new TodoFragment());
-        mFragment.add(new DoneFragment());
-        mFragment.add(new ProcessInsFragment());
-        mFragment.add(new ProcessFinishFragment());
+        mFragment.add(new TodoFragment());
+        mFragment.add(new TodoFragment());
+        mFragment.add(new TodoFragment());
 
         mViewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override

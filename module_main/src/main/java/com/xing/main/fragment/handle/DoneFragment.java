@@ -17,7 +17,7 @@ import com.xing.commonbase.widget.ItemView;
 import com.xing.commonbase.widget.ZoomScrollView;
 import com.xing.main.R;
 import com.xing.main.annotation.UserLoginTrace;
-import com.xing.main.bean.UserResult;
+import com.xing.main.bean.xboot.User;
 import com.xing.main.contract.MineContract;
 import com.xing.main.presenter.MinePresenter;
 
@@ -118,13 +118,13 @@ public class DoneFragment extends BaseMVPFragment<MinePresenter> implements Mine
     }
 
     @Override
-    public void onUserInfo(UserResult userResult) {
-        if(!TextUtils.isEmpty(userResult.getAvatar())){
-            Glide.with(mContext).load(userResult.getAvatar()).into(backImgView);
-            Glide.with(mContext).load(userResult.getAvatar()).into(circleImageView);
+    public void onUserInfo(User user) {
+        if(!TextUtils.isEmpty(user.getAvatar())){
+            Glide.with(mContext).load(user.getAvatar()).into(backImgView);
+            Glide.with(mContext).load(user.getAvatar()).into(circleImageView);
         }
-        nicknameView.setText(userResult.getNickname());
-        departmentView.setText(userResult.getDepartmentTitle());
+        nicknameView.setText(user.getNickname());
+        departmentView.setText(user.getDepartmentTitle());
     }
 
     @Override

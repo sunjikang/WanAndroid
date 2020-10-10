@@ -11,11 +11,12 @@ import com.xing.main.bean.SearchHotKey;
 import com.xing.main.bean.SearchResult;
 import com.xing.main.bean.SystemArticleResult;
 import com.xing.main.bean.SystemResult;
-import com.xing.main.bean.UserResult;
+import com.xing.main.bean.xboot.ProcessNodeVo;
+import com.xing.main.bean.xboot.User;
 import com.xing.main.bean.WeChatArticleResult;
 import com.xing.main.bean.WeChatAuthorResult;
-import com.xing.main.bean.handle.ActPage;
-import com.xing.main.bean.handle.TodoResult;
+import com.xing.main.bean.xboot.ActPage;
+import com.xing.main.bean.xboot.TodoResult;
 
 import java.util.List;
 
@@ -150,7 +151,7 @@ public interface MainApiService {
      * 获取用户详情
      */
     @GET("xboot/user/info")
-    Observable<BaseResponse<UserResult>> getUserInfo();
+    Observable<BaseResponse<User>> getUserInfo();
 
     /**
      * 获取带办列表
@@ -163,4 +164,7 @@ public interface MainApiService {
      */
     @GET("xboot/actTask/doneList")
     Observable<BaseResponse<ActPage<TodoResult>>> getDoneList(@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
+
+    @GET("xboot/actProcess/getNextNode/{procDefId}/{currActId}")
+    Observable<BaseResponse<ProcessNodeVo>> getNextNode(@Path("procDefId") String procDefId, @Path("currActId") String currActId);
 }

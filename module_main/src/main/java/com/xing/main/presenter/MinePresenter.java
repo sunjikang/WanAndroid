@@ -3,14 +3,8 @@ package com.xing.main.presenter;
 import com.xing.commonbase.base.BaseObserver;
 import com.xing.commonbase.mvp.BasePresenter;
 import com.xing.main.apiservice.MainApiService;
-import com.xing.main.bean.BannerResult;
-import com.xing.main.bean.HomeArticleResult;
-import com.xing.main.bean.UserResult;
-import com.xing.main.bean.WeChatAuthorResult;
-import com.xing.main.contract.HomeContract;
+import com.xing.main.bean.xboot.User;
 import com.xing.main.contract.MineContract;
-
-import java.util.List;
 
 public class MinePresenter extends BasePresenter<MineContract.View> implements MineContract.Presenter {
 
@@ -20,11 +14,11 @@ public class MinePresenter extends BasePresenter<MineContract.View> implements M
      */
     @Override
     public void getUserInfo() {
-        addSubscribe(create(MainApiService.class).getUserInfo(), new BaseObserver<UserResult>(getView()) {
+        addSubscribe(create(MainApiService.class).getUserInfo(), new BaseObserver<User>(getView()) {
             @Override
-            protected void onSuccess(UserResult userResult) {
+            protected void onSuccess(User user) {
                 if (isViewAttached()) {
-                    getView().onUserInfo(userResult);
+                    getView().onUserInfo(user);
                 }
             }
         });

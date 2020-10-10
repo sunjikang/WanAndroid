@@ -1,4 +1,4 @@
-package com.xing.main.bean.handle;
+package com.xing.main.bean.xboot;
 
 
 import java.util.List;

@@ -6,6 +6,13 @@
     <string name="happy_a_minute">轻松一刻</string>
     <string name="about">关于</string>
     <string name="setting">设置</string>
+    <string name="logout">注销登录</string>
 
     <string name="progress_please_wait">请等待...</string>
+
+    <string name="todo_input_note">请输入审批意见</string>
+    <string name="todo_check_1">站内消息</string>
+    <string name="todo_check_2">短信</string>
+    <string name="todo_check_3">邮件</string>
+
 </resources>

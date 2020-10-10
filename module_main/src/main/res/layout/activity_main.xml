@@ -58,7 +58,7 @@
             android:button="@null"
             android:drawableTop="@drawable/selector_menu_system"
             android:gravity="center"
-            android:text="体系"
+            android:text="消息"
             android:textSize="10sp" />
 
 

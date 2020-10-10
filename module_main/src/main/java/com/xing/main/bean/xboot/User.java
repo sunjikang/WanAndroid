@@ -1,12 +1,10 @@
-package com.xing.main.bean;
+package com.xing.main.bean.xboot;
 
-
-import java.util.Date;
 
 /**
  * @author Exrickx
  */
-public class UserResult {
+public class User {
 
     private String username;
     private String nickname;
