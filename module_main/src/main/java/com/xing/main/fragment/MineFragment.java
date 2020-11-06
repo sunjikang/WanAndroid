@@ -37,6 +37,7 @@ public class MineFragment extends BaseMVPFragment<MinePresenter> implements Mine
     private ItemView favoriteItemView;
     private ItemView meiziItemView;
     private ItemView aboutItemView;
+    private ItemView checkItemView;
     private ItemView logoutItemView;
 
     public MineFragment() {
@@ -60,12 +61,18 @@ public class MineFragment extends BaseMVPFragment<MinePresenter> implements Mine
         favoriteItemView = rootView.findViewById(R.id.iv_mine_favorite);
         meiziItemView = rootView.findViewById(R.id.iv_mine_meizi);
         aboutItemView = rootView.findViewById(R.id.iv_mine_about);
+        checkItemView = rootView.findViewById(R.id.iv_mine_check);
         logoutItemView = rootView.findViewById(R.id.iv_mine_logout);
     }
 
     @Override
     protected void initData() {
         scrollView.setZoomView(backImgView);
+        scrollView.setOnScrollListener(new ZoomScrollView.OnScrollListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+            }
+        });
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test);
         backImgView.setImageBitmap(BlurUtil.blur(mContext, bitmap, 18));
 
@@ -73,6 +80,7 @@ public class MineFragment extends BaseMVPFragment<MinePresenter> implements Mine
         favoriteItemView.setOnClickListener(this);
         meiziItemView.setOnClickListener(this);
         aboutItemView.setOnClickListener(this);
+        checkItemView.setOnClickListener(this);
         logoutItemView.setOnClickListener(this);
 
         presenter.getUserInfo();
@@ -101,6 +109,8 @@ public class MineFragment extends BaseMVPFragment<MinePresenter> implements Mine
             gotoFavoriteActivity();
         } else if (v.getId() == R.id.iv_mine_meizi) {
             gotoMeiziActivity();
+        } else if (v.getId() == R.id.iv_mine_check) {
+            //todo 调用检查版本接口
         } else if (v.getId() == R.id.iv_mine_logout) {
             gotoLoginActivity();
         }
@@ -131,14 +141,14 @@ public class MineFragment extends BaseMVPFragment<MinePresenter> implements Mine
     private void gotoLoginActivity() {
         MainActivity mainActivity = (MainActivity) mContext;
         mainActivity.finish();
-        SharedPreferenceUtil.write(Constants.File_TOKEN, Constants.ACCESS_TOKEN, "");
+        SharedPreferenceUtil.write(Constants.FILE_TOKEN, Constants.ACCESS_TOKEN, "");
         ARouter.getInstance().build("/user/LoginActivity").navigation();
     }
 
     @Override
     public void onUserInfo(User user) {
         if (!TextUtils.isEmpty(user.getAvatar())) {
-            Glide.with(mContext).load(user.getAvatar()).into(backImgView);
+//            Glide.with(mContext).load(user.getAvatar()).into(backImgView);
             Glide.with(mContext).load(user.getAvatar()).into(circleImageView);
         }
         nicknameView.setText(user.getNickname());

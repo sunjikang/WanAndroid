@@ -14,14 +14,13 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
         implements LoginContract.Presenter {
 
     @Override
-    public void login(String username, String password, String code, String captchaId) {
-        addSubscribe(create(UserCenterApiService.class).login(username, password, code, captchaId), new BaseObserver<String>(getView()) {
+    public void login(String username, String password, String deviceUniqueCode) {
+        addSubscribe(create(UserCenterApiService.class).login(username, password, deviceUniqueCode, 1), new BaseObserver<String>(getView()) {
 
             @Override
-            protected void onSuccess(String data) {
+            protected void onSuccess(String token) {
                 if (isViewAttached()) {
-                    saveToken(data);
-                    getView().loginSuccess();
+                    getView().loginSuccess(token);
                 }
             }
 
@@ -32,29 +31,4 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
             }
         });
     }
-
-    @Override
-    public void init() {
-        addSubscribe(create(UserCenterApiService.class).init(), new BaseObserver<String>(getView()) {
-
-            @Override
-            protected void onSuccess(String data) {
-                if (isViewAttached()) {
-                    getView().initSuccess(data);
-                }
-            }
-        });
-    }
-
-    /**
-     * 保存 token 至本地
-     *
-     * @param result
-     */
-    private void saveToken(String result) {
-        if (!TextUtils.isEmpty(result)) {
-            SharedPreferenceUtil.write(Constants.File_TOKEN, Constants.ACCESS_TOKEN, result);
-        }
-    }
-
 }

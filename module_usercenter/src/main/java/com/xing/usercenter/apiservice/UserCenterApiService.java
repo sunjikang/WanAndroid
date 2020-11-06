@@ -28,24 +28,17 @@ public interface UserCenterApiService {
 
     /**
      * 登录
-     *
      * @param username
      * @param password
+     * @param deviceUniqueCode
+     * @param platform
      * @return
      */
-    @POST("xboot/login")
+    @POST("xboot/app/consumer/user/login")
     @FormUrlEncoded
     Observable<BaseResponse<String>> login(@Field("username") String username,
-                                                @Field("password") String password,
-                                                @Field("code") String code,
-                                                @Field("captchaId") String captchaId);
-
-    /**
-     * 初始化验证码
-     *
-     * @return
-     */
-    @GET("xboot/common/captcha/init")
-    Observable<BaseResponse<String>> init();
+                                           @Field("password") String password,
+                                           @Field("deviceUniqueCode") String deviceUniqueCode,
+                                           @Field("platform") Integer platform);
 
 }

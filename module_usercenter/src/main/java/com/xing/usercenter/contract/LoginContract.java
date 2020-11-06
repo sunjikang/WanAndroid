@@ -6,16 +6,12 @@ import com.xing.usercenter.bean.LoginResult;
 public interface LoginContract {
 
     interface View extends IView {
-        void loginSuccess();
+        void loginSuccess(String token);
 
         void loginError();
-
-        void initSuccess(String captchaId);
     }
 
     interface Presenter {
-        void login(String phone, String password, String code, String captchaId);
-
-        void init();
+        void login(String phone, String password, String deviceUniqueCode);
     }
 }

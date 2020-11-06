@@ -8,9 +8,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.xing.commonbase.base.BaseActivity;
 import com.xing.commonbase.base.BaseMVPActivity;
 import com.xing.commonbase.constants.Constants;
+import com.xing.commonbase.http.RetrofitClient;
 import com.xing.commonbase.util.SharedPreferenceUtil;
 import com.xing.commonbase.util.ToastUtil;
 import com.xing.usercenter.R;
@@ -19,7 +21,7 @@ import com.xing.usercenter.contract.RegisterContract;
 import com.xing.usercenter.presenter.RegisterPresenter;
 
 @Route(path = "/user/SettingActivity")
-public class SettingActivity extends BaseActivity{
+public class SettingActivity extends BaseActivity {
     EditText hostEditText;
     EditText onlyEditText;
     Button saveBtn;
@@ -46,7 +48,13 @@ public class SettingActivity extends BaseActivity{
         saveBtn = findViewById(R.id.btn_save);
 
         String host = SharedPreferenceUtil.read(Constants.HOST, Constants.HOST, "");
-        hostEditText.setText(host);
+        if (!TextUtils.isEmpty(host)) {
+            hostEditText.setText(host);
+        }
+        String only = SharedPreferenceUtil.read(Constants.DEVICE_UNIQUE_CODE, Constants.DEVICE_UNIQUE_CODE, "");
+        if (!TextUtils.isEmpty(host)) {
+            hostEditText.setText(host);
+        }
     }
 
 
@@ -58,10 +66,16 @@ public class SettingActivity extends BaseActivity{
             public void onClick(View v) {
                 String host = hostEditText.getText().toString().trim();
                 if (TextUtils.isEmpty(host)) {
-                    ToastUtil.show(mContext, "请输入访问地址");
+                    ToastUtil.show(mContext, R.string.please_input_host_hint);
                     return;
                 }
                 SharedPreferenceUtil.write(Constants.HOST, Constants.HOST, host);
+                String only = onlyEditText.getText().toString().trim();
+                if (TextUtils.isEmpty(only)) {
+                    ToastUtil.show(mContext, R.string.please_input_only);
+                    return;
+                }
+                SharedPreferenceUtil.write(Constants.DEVICE_UNIQUE_CODE, Constants.DEVICE_UNIQUE_CODE, only);
                 finish();
             }
         });

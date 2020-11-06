@@ -16,6 +16,7 @@ import com.xing.main.fragment.HomeFragment;
 import com.xing.main.fragment.MineFragment;
 import com.xing.main.fragment.HandleFragment;
 import com.xing.main.fragment.SystemFragment;
+import com.xing.main.fragment.WVHomeFragment;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
@@ -105,6 +106,11 @@ public class MainActivity extends BaseActivity {
         HomeFragment homeFragment = new HomeFragment();
         ft.add(R.id.fl_main_container, homeFragment);
         fragmentList.add(homeFragment);
+
+        //直接加载pc端首页
+//        WVHomeFragment wvHomeFragment = new WVHomeFragment();
+//        ft.add(R.id.fl_main_container, wvHomeFragment);
+//        fragmentList.add(wvHomeFragment);
 
         projectFragment = new HandleFragment();
         ft.add(R.id.fl_main_container, projectFragment);

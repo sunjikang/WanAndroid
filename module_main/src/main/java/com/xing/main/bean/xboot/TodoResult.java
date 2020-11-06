@@ -1,6 +1,31 @@
 package com.xing.main.bean.xboot;
 
 public class TodoResult {
+    /**
+     * {
+     *     "id": "115007",
+     *     "name": "审核",
+     *     "key": "sid-63FE97B5-1E10-443F-8A34-FCD1DA862F65",
+     *     "description": null,
+     *     "executionId": "115001",
+     *     "assignee": null,
+     *     "owner": null,
+     *     "ownerUsername": null,
+     *     "procDefId": "ticketOperateDq:1:11",
+     *     "procInstId": "115001",
+     *     "applyer": "管理员",
+     *     "applyerUsername": "admin",
+     *     "category": null,
+     *     "priority": 0,
+     *     "isSuspended": false,
+     *     "createTime": "2020-10-13 09:31:48",
+     *     "processName": "电气操作票",
+     *     "routeName": "ticketOperateDq",
+     *     "businessKey": "1315827489066586112",
+     *     "tableId": "1315827489028837376",
+     *     "version": 1
+     * }
+     */
     private String id;
     private String name;
     private String key;

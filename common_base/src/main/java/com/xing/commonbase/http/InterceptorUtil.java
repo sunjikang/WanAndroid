@@ -45,7 +45,7 @@ public class InterceptorUtil {
         return new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
-                String token = SharedPreferenceUtil.read(Constants.File_TOKEN, Constants.ACCESS_TOKEN, "");
+                String token = SharedPreferenceUtil.read(Constants.FILE_TOKEN, Constants.ACCESS_TOKEN, "");
                 if (TextUtils.isEmpty(token)) {
                     Request originalRequest = chain.request();
                     return chain.proceed(originalRequest);

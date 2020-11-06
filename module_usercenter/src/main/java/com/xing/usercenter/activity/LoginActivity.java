@@ -20,14 +20,11 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.xing.commonbase.base.BaseMVPActivity;
 import com.xing.commonbase.constants.Constants;
-import com.xing.commonbase.http.RetrofitClient;
 import com.xing.commonbase.manager.UserLoginManager;
 import com.xing.commonbase.util.SharedPreferenceUtil;
 import com.xing.commonbase.util.SoftKeyboardUtil;
-import com.xing.commonbase.util.ToastUtil;
 import com.xing.commonbase.widget.loading.ProgressDialog;
 import com.xing.usercenter.R;
-import com.xing.usercenter.bean.LoginResult;
 import com.xing.usercenter.contract.LoginContract;
 import com.xing.usercenter.presenter.LoginPresenter;
 
@@ -41,8 +38,6 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
     private CheckBox pwdVisibleCheckBox;
     private EditText usernameEditText;
     private EditText passwordEditText;
-    private ImageView captchaImg;
-    private EditText codeEditText;
 
     private String captchaId;
 
@@ -59,8 +54,6 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
         pwdVisibleCheckBox = findViewById(R.id.cb_login_pwd_visible);
         usernameEditText = findViewById(R.id.et_login_username);
         passwordEditText = findViewById(R.id.et_login_password);
-        captchaImg = findViewById(R.id.iv_login_captcha_img);
-        codeEditText = findViewById(R.id.et_login_code);
     }
 
     @Override
@@ -89,7 +82,6 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
         loginBtn.setOnClickListener(this);//登录按钮
         registerTxtView.setOnClickListener(this);//去注册
         settingTxtView.setOnClickListener(this);//去设置
-        captchaImg.setOnClickListener(this);//验证码图片
         pwdVisibleCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -118,7 +110,6 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
             Toast.makeText(mContext, R.string.please_input_host, Toast.LENGTH_LONG).show();
             return;
         }
-        presenter.init();
     }
 
     @Override
@@ -130,13 +121,6 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
             gotoRegisterActivity();
         } else if (i == R.id.tv_setting) {
             gotoSettingActivity();
-        } else if (i == R.id.iv_login_captcha_img) {
-            String host = SharedPreferenceUtil.read(Constants.HOST, Constants.HOST, "");
-            if (TextUtils.isEmpty(host)) {
-                Toast.makeText(mContext, R.string.please_input_host, Toast.LENGTH_LONG).show();
-                return;
-            }
-            presenter.init();
         }
     }
 
@@ -150,9 +134,13 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
             Toast.makeText(mContext, R.string.please_input_host, Toast.LENGTH_LONG).show();
             return;
         }
+        String deviceUniqueCode = SharedPreferenceUtil.read(Constants.DEVICE_UNIQUE_CODE, Constants.DEVICE_UNIQUE_CODE, "");
+        if (TextUtils.isEmpty(deviceUniqueCode)) {
+            Toast.makeText(mContext, R.string.please_input_only, Toast.LENGTH_LONG).show();
+            return;
+        }
         String username = usernameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
-        String code = codeEditText.getText().toString().trim();
         if (TextUtils.isEmpty(username)) {
             Toast.makeText(mContext, R.string.please_input_username, Toast.LENGTH_LONG).show();
             return;
@@ -161,17 +149,14 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
             Toast.makeText(mContext, R.string.please_input_password, Toast.LENGTH_LONG).show();
             return;
         }
-        if (TextUtils.isEmpty(code)) {
-            Toast.makeText(mContext, R.string.please_input_code, Toast.LENGTH_LONG).show();
-            return;
-        }
-        presenter.login(username, password, code, captchaId);
+        presenter.login(username, password, deviceUniqueCode);
 //        gotoMainActivity();
     }
 
 
     @Override
-    public void loginSuccess() {
+    public void loginSuccess(String token) {
+        SharedPreferenceUtil.write(Constants.FILE_TOKEN, Constants.ACCESS_TOKEN, token);
         UserLoginManager.getInstance().setLoggedin(true);
         String username = usernameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
@@ -183,16 +168,6 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
     @Override
     public void loginError() {
         this.captchaId = "";
-        codeEditText.setText("");
-        presenter.init();
-    }
-
-    @Override
-    public void initSuccess(String captchaId) {
-//        presenter.draw(captchaId);
-        this.captchaId = captchaId;
-        String host = SharedPreferenceUtil.read(Constants.HOST, Constants.HOST, "");
-        Glide.with(mContext).load(host + "xboot/common/captcha/draw/" + this.captchaId).into(captchaImg);
     }
 
 

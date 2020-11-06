@@ -6,8 +6,6 @@ import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.xing.commonbase.base.BaseApplication;
 import com.xing.commonbase.constants.Constants;
-import com.xing.commonbase.interceptor.AddCookiesInterceptor;
-import com.xing.commonbase.interceptor.ReceivedCookiesInterceptor;
 import com.xing.commonbase.json.FastJsonConverterFactory;
 import com.xing.commonbase.util.SharedPreferenceUtil;
 
@@ -19,8 +17,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 public class RetrofitClient {
 
-//    private static final String API_HOST = "https://www.wanandroid.com/";
-//    public static final String API_HOST = "http://10.2.8.154:8888/";
+    //    private static final String API_HOST = "https://www.wanandroid.com/";
     private static RetrofitClient instance;
     private static OkHttpClient okHttpClient;
     private static Retrofit retrofit;
@@ -73,4 +70,5 @@ public class RetrofitClient {
     public Retrofit getRetrofit() {
         return retrofit;
     }
+
 }

@@ -1,10 +1,12 @@
 package com.xing.commonbase.base;
 
-import android.text.TextUtils;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.xing.commonbase.constants.Constants;
 import com.xing.commonbase.http.ApiException;
 import com.xing.commonbase.http.ExceptionHandler;
 import com.xing.commonbase.mvp.IView;
+import com.xing.commonbase.util.SharedPreferenceUtil;
 
 import io.reactivex.observers.DisposableObserver;
 
@@ -40,6 +42,11 @@ public abstract class BaseObserver<T> extends DisposableObserver<BaseResponse<T>
             onSuccess(data);
         } else {
             onError(new ApiException(code, message));
+            //登录失效
+            if(code == 401){
+                SharedPreferenceUtil.write(Constants.FILE_TOKEN, Constants.ACCESS_TOKEN, "");
+                ARouter.getInstance().build("/user/LoginActivity").navigation();
+            }
         }
     }
 
@@ -57,6 +64,9 @@ public abstract class BaseObserver<T> extends DisposableObserver<BaseResponse<T>
      */
     @Override
     public void onError(Throwable e) {
+        if (baseView != null) {
+            baseView.hideLoading();
+        }
         ExceptionHandler.handleException(e);
     }
 

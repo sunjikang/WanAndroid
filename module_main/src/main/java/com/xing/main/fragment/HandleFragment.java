@@ -62,8 +62,8 @@ public class HandleFragment extends BaseFragment {
         mTitle = new ArrayList<>();
         mTitle.add("我的待办");
         mTitle.add("我的已办");
-        mTitle.add("流转中流程");
-        mTitle.add("已结束流程");
+        mTitle.add("流转中");
+        mTitle.add("已结束");
 
         mFragment = new ArrayList<>();
         mFragment.add(new TodoFragment());

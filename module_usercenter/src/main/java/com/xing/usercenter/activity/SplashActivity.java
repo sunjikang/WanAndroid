@@ -23,7 +23,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        String token = SharedPreferenceUtil.read(Constants.File_TOKEN, Constants.ACCESS_TOKEN, "");
+        String token = SharedPreferenceUtil.read(Constants.FILE_TOKEN, Constants.ACCESS_TOKEN, "");
         if (!TextUtils.isEmpty(token)) {
             gotoMainActivity();
         } else {

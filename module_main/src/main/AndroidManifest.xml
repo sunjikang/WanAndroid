@@ -24,9 +24,11 @@
             android:exported="false" />
         <activity
             android:name=".activity.FavoriteActivity"
-            android:exported="false">
+            android:exported="false"></activity>
+        <activity
+            android:name=".activity.handle.HistoryActivity"
+            android:exported="false"></activity>
 
-        </activity>
     </application>
 
 </manifest>

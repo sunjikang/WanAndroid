@@ -10,7 +10,7 @@ public class Constants {
 
 
     // access-token file name
-    public static final String File_TOKEN = "accessToken";
+    public static final String FILE_TOKEN = "accessToken";
     public static final String ACCESS_TOKEN = "accessToken";
     // phone，password
     public static final String USER_LOGIN = "userLogin";
@@ -30,7 +30,10 @@ public class Constants {
     public static final String KEY_COOKIE = "key_cookie";
     public static final String COOKIE = "cookie";
 
-    public static final String HOST = "cookie";
+    // 登录前设置界面
+    public static final String HOST = "base_url";
+    public static final String DEVICE_UNIQUE_CODE = "deviceUniqueCode";
+
 
 
 }

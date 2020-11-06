@@ -27,6 +27,42 @@ public class TodoPresenter extends BasePresenter<TodoContract.View> implements T
     }
 
     @Override
+    public void pass(String id, String procInstId, String[] assignees, Integer priority, String comment, Boolean sendMessage, Boolean sendSms, Boolean sendEmail) {
+        addSubscribe(create(MainApiService.class).pass(id, procInstId,assignees,priority,comment,sendMessage,sendSms,sendEmail), new BaseObserver<Object>(getView()) {
+            @Override
+            protected void onSuccess(Object result) {
+                if (isViewAttached()) {
+                    getView().onPass();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void back(String id, String procInstId, String comment, Boolean sendMessage, Boolean sendSms, Boolean sendEmail) {
+        addSubscribe(create(MainApiService.class).back(id, procInstId,comment,sendMessage,sendSms,sendEmail), new BaseObserver<Object>(getView()) {
+            @Override
+            protected void onSuccess(Object result) {
+                if (isViewAttached()) {
+                    getView().onBack();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void delegate(String id, String userId, String procInstId, String comment, Boolean sendMessage, Boolean sendSms, Boolean sendEmail) {
+        addSubscribe(create(MainApiService.class).delegate(id,userId, procInstId,comment,sendMessage,sendSms,sendEmail), new BaseObserver<Object>(getView()) {
+            @Override
+            protected void onSuccess(Object result) {
+                if (isViewAttached()) {
+                    getView().onDelegate();
+                }
+            }
+        });
+    }
+
+    @Override
     public void getNextNode(String procDefId, String currActId) {
         addSubscribe(create(MainApiService.class).getNextNode(procDefId, currActId), new BaseObserver<ProcessNodeVo>(getView()) {
             @Override

@@ -53,7 +53,7 @@ public class ProgressWebView extends WebView {
 
     private void initWebSettings() {
         getSettings().setJavaScriptEnabled(true);
-        getSettings().setSupportZoom(true);           // 设置是否支持缩放
+        getSettings().setSupportZoom(false);           // 设置是否支持缩放
         getSettings().setDisplayZoomControls(false);
         getSettings().setBuiltInZoomControls(true);
         getSettings().setAllowFileAccess(true);       // 是否允许访问文件

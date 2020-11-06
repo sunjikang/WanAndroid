@@ -19,7 +19,8 @@
 
         <activity
             android:name="com.xing.usercenter.activity.LoginActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTask" />
         <activity
             android:name="com.xing.usercenter.activity.RegisterActivity"
             android:exported="false" />

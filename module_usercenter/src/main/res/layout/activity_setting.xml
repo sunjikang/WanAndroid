@@ -22,10 +22,8 @@
             style="@style/RegisterEditTextStyle"
             android:layout_marginTop="20dp"
             android:drawablePadding="10dp"
-            android:hint="@string/please_input_host"
-            android:text="http://10.2.8.154:8888/"
-            android:imeOptions="actionNext"
-            android:nextFocusForward="@+id/et_forget_pwd_verify_code" />
+            android:hint="@string/please_input_host_hint"
+            android:text="http://10.2.8.154:8888/"/>
 
 
         <View
@@ -38,9 +36,8 @@
             style="@style/RegisterEditTextStyle"
             android:layout_marginTop="20dp"
             android:drawablePadding="10dp"
-            android:hint="@string/please_input_only"
-            android:imeOptions="actionNext"
-            android:inputType="textPassword" />
+            android:text="123"
+            android:hint="@string/please_input_only"/>
 
         <View
             android:layout_width="match_parent"

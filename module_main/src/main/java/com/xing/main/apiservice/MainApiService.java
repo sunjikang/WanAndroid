@@ -149,8 +149,9 @@ public interface MainApiService {
 
     /**
      * 获取用户详情
+     * GET /xboot/app/consumer/user/userinfo
      */
-    @GET("xboot/user/info")
+    @GET("xboot/app/consumer/user/userinfo")
     Observable<BaseResponse<User>> getUserInfo();
 
     /**
@@ -160,11 +161,87 @@ public interface MainApiService {
     Observable<BaseResponse<ActPage<TodoResult>>> getTodoList(@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 
     /**
-     * 获取带办列表
+     * 已办列表
      */
     @GET("xboot/actTask/doneList")
     Observable<BaseResponse<ActPage<TodoResult>>> getDoneList(@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 
+
+    /**
+     * 任务节点审批通过
+     *
+     * @param id          任务id
+     * @param procInstId  流程实例id
+     * @param assignees   流程实例id
+     * @param priority    下个节点审批人
+     * @param comment     优先级
+     * @param sendMessage 是否发送站内消息
+     * @param sendSms     是否发送短信通知
+     * @param sendEmail   是否发送邮件通知
+     * @return
+     */
+    @POST("xboot/actTask/pass")
+    @FormUrlEncoded
+    Observable<BaseResponse<Object>> pass(@Field("id") String id,
+                                          @Field("procInstId") String procInstId,
+                                          @Field("assignees") String[] assignees,
+                                          @Field("priority") Integer priority,
+                                          @Field("comment") String comment,
+                                          @Field("sendMessage") Boolean sendMessage,
+                                          @Field("sendSms") Boolean sendSms,
+                                          @Field("sendEmail") Boolean sendEmail);
+
+    /**
+     * 任务节点审批驳回至发起人
+     *
+     * @param id          任务id
+     * @param procInstId  流程实例id
+     * @param comment     意见评论
+     * @param sendMessage 是否发送站内消息
+     * @param sendSms     是否发送短信通知
+     * @param sendEmail   是否发送邮件通知
+     * @return
+     */
+    @POST("xboot/actTask/back")
+    @FormUrlEncoded
+    Observable<BaseResponse<Object>> back(@Field("id") String id,
+                                          @Field("procInstId") String procInstId,
+                                          @Field("comment") String comment,
+                                          @Field("sendMessage") Boolean sendMessage,
+                                          @Field("sendSms") Boolean sendSms,
+                                          @Field("sendEmail") Boolean sendEmail);
+
+    /**
+     * 委托他人代办
+     *
+     * @param id          任务id
+     * @param userId      委托用户id
+     * @param procInstId  流程实例id
+     * @param comment     意见评论
+     * @param sendMessage 是否发送站内消息
+     * @param sendSms     是否发送短信通知
+     * @param sendEmail   是否发送邮件通知
+     * @return
+     */
+    @POST("xboot/actTask/delegate")
+    @FormUrlEncoded
+    Observable<BaseResponse<Object>> delegate(@Field("id") String id,
+                                              @Field("userId") String userId,
+                                              @Field("procInstId") String procInstId,
+                                              @Field("comment") String comment,
+                                              @Field("sendMessage") Boolean sendMessage,
+                                              @Field("sendSms") Boolean sendSms,
+                                              @Field("sendEmail") Boolean sendEmail);
+
+    /**
+     * 通过当前节点定义id获取下一个节点
+     */
+    @GET("xboot/actTask/historicFlow/{id}")
+    Observable<BaseResponse<List<Object>>> historicFlow(@Path("id") String id);
+
+    /**
+     * 通过当前节点定义id获取下一个节点
+     */
     @GET("xboot/actProcess/getNextNode/{procDefId}/{currActId}")
     Observable<BaseResponse<ProcessNodeVo>> getNextNode(@Path("procDefId") String procDefId, @Path("currActId") String currActId);
 }

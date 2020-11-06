@@ -115,6 +115,13 @@
                 app:leftIcon="@drawable/ic_mine_about" />
 
             <com.xing.commonbase.widget.ItemView
+                android:id="@+id/iv_mine_check"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:itemTitle="@string/check"
+                app:leftIcon="@drawable/ic_mine_about" />
+
+            <com.xing.commonbase.widget.ItemView
                 android:id="@+id/iv_mine_logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -24,7 +24,6 @@ import com.xing.main.presenter.MinePresenter;
 public class ProcessInsFragment extends BaseMVPFragment<MinePresenter> implements MineContract.View,  View.OnClickListener {
 
     private ZoomScrollView scrollView;
-    private ImageView backImgView;
     private CircleImageView circleImageView;
     private TextView nicknameView;
     private TextView departmentView;
@@ -45,7 +44,6 @@ public class ProcessInsFragment extends BaseMVPFragment<MinePresenter> implement
 
     @Override
     protected void initView(View rootView) {
-        backImgView = rootView.findViewById(R.id.iv_avatar_background);
         circleImageView = rootView.findViewById(R.id.civ_avatar);
         nicknameView = rootView.findViewById(R.id.tv_nickname);
         departmentView = rootView.findViewById(R.id.tv_department);
@@ -60,10 +58,6 @@ public class ProcessInsFragment extends BaseMVPFragment<MinePresenter> implement
 
     @Override
     protected void initData() {
-        scrollView.setZoomView(backImgView);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test);
-        backImgView.setImageBitmap(BlurUtil.blur(mContext, bitmap, 18));
-
 
         favoriteItemView.setOnClickListener(this);
         meiziItemView.setOnClickListener(this);
@@ -120,7 +114,6 @@ public class ProcessInsFragment extends BaseMVPFragment<MinePresenter> implement
     @Override
     public void onUserInfo(User user) {
         if(!TextUtils.isEmpty(user.getAvatar())){
-            Glide.with(mContext).load(user.getAvatar()).into(backImgView);
             Glide.with(mContext).load(user.getAvatar()).into(circleImageView);
         }
         nicknameView.setText(user.getNickname());
