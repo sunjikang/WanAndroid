@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.xing.commonbase.base.BaseApplication;
 
+
 public class MainApp extends BaseApplication {
 
     private static Context mContext;
@@ -17,5 +18,7 @@ public class MainApp extends BaseApplication {
     public static Context getAppContext() {
         return mContext;
     }
+
+
 
 }

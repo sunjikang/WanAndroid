@@ -1,5 +1,7 @@
 package com.xing.commonbase.base;
 
+import android.view.View;
+
 import com.xing.commonbase.mvp.IPresenter;
 import com.xing.commonbase.mvp.IView;
 
@@ -37,4 +39,5 @@ public abstract class BaseMVPActivity<P extends IPresenter> extends BaseActivity
             unbinder.unbind();
         }
     }
+
 }

@@ -56,7 +56,7 @@ public class SettingActivity extends BaseActivity {
             hostEditText.setText(host);
         }
     }
-
+   // http://10.2.8.154:8888/
 
     @Override
     protected void initData() {

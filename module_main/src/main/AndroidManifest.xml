@@ -7,24 +7,8 @@
             android:name=".activity.MainActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.SearchActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.WebViewActivity"
-            android:exported="false"
-            android:launchMode="singleTop" />
-        <activity
-            android:name=".activity.WeChatArticleListActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.SystemArticleActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.AboutActivity"
             android:exported="false" />
-        <activity
-            android:name=".activity.FavoriteActivity"
-            android:exported="false"></activity>
         <activity
             android:name=".activity.handle.HistoryActivity"
             android:exported="false"></activity>

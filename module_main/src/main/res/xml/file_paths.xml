@@ -5,7 +5,16 @@
         name="files_root"
         path="Android/data/com.nongyan.xinzhihouse/" />
     <!--内部存储路径-->
-    <files-path
+    <files-pathcom.xing.wanandroid.fileprovider
         name="Android/data/com.nongyan.xinzhihouse/"
-        path="files_root"></files-path>
+        path="files_root"></files-pathcom.xing.wanandroid.fileprovider>
+    <external-path
+        name="external_path"
+        path="." />
+    <external-path
+        name="images"
+        path="test/"/>
+    <external-path
+        name="download"
+        path="Download/"/>
 </paths>

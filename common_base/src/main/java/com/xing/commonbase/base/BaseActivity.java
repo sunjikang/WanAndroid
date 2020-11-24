@@ -9,16 +9,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.xing.commonbase.annotation.BindEventBus;
 import com.xing.commonbase.receiver.NetworkChangeReceiver;
 import com.xing.commonbase.util.EventBusHelper;
 import com.xing.commonbase.util.StatusBarUtil;
 
 public abstract class BaseActivity extends AppCompatActivity {
-
     protected Context mContext;
     private NetworkChangeReceiver receiver;
-
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,14 +32,18 @@ public abstract class BaseActivity extends AppCompatActivity {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//黑色
         }
 //        StatusBarUtil.setLightMode(this);
+         registerNetworkChangeReceiver();
 
-        registerNetworkChangeReceiver();
+        ARouter.getInstance().inject(this);
+
         initView();
+
         initData();
     }
 
     public void setStatusBarColor() {
         StatusBarUtil.setColor(this, getResources().getColor(android.R.color.white), 0);
+
     }
 
     protected abstract int getLayoutResId();

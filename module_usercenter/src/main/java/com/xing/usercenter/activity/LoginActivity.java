@@ -150,7 +150,7 @@ public class LoginActivity extends BaseMVPActivity<LoginPresenter>
             return;
         }
         presenter.login(username, password, deviceUniqueCode);
-//        gotoMainActivity();
+       // gotoMainActivity();
     }
 
 

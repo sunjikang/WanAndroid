@@ -14,9 +14,7 @@ import com.xing.commonbase.util.StatusBarUtil;
 import com.xing.main.R;
 import com.xing.main.fragment.HomeFragment;
 import com.xing.main.fragment.MineFragment;
-import com.xing.main.fragment.HandleFragment;
 import com.xing.main.fragment.SystemFragment;
-import com.xing.main.fragment.WVHomeFragment;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
@@ -32,10 +30,9 @@ public class MainActivity extends BaseActivity {
     private FragmentManager fragmentManager;
     private List<Fragment> fragmentList;
     private RadioButton homeRadioButton;
+    private RadioButton systemRadioButton;
     private RadioButton mineRadioButton;
     private int currentSelectedId = R.id.rb_home;
-    private HandleFragment projectFragment;
-    private SystemFragment systemFragment;
 
     @Override
     protected int getLayoutResId() {
@@ -46,6 +43,7 @@ public class MainActivity extends BaseActivity {
     protected void initView() {
         radioGroup = findViewById(R.id.rg_radio_group);
         homeRadioButton = findViewById(R.id.rb_home);
+        systemRadioButton = findViewById(R.id.rb_system);
         mineRadioButton = findViewById(R.id.rb_mine);
     }
 
@@ -65,14 +63,10 @@ public class MainActivity extends BaseActivity {
                 currentSelectedId = checkedId;
                 if (checkedId == R.id.rb_home) {
                     selectFragment(0);
-                } else if (checkedId == R.id.rb_project) {
+                }  else if (checkedId == R.id.rb_system) {
                     selectFragment(1);
-                    projectFragment.setStatusBarColor(Color.WHITE);
-                    StatusBarUtil.setLightMode(MainActivity.this);
-                } else if (checkedId == R.id.rb_system) {
-                    selectFragment(2);
                 } else if (checkedId == R.id.rb_mine) {
-                    selectFragment(3);
+                    selectFragment(2);
 
                 }
             }
@@ -107,16 +101,10 @@ public class MainActivity extends BaseActivity {
         ft.add(R.id.fl_main_container, homeFragment);
         fragmentList.add(homeFragment);
 
-        //直接加载pc端首页
-//        WVHomeFragment wvHomeFragment = new WVHomeFragment();
-//        ft.add(R.id.fl_main_container, wvHomeFragment);
-//        fragmentList.add(wvHomeFragment);
 
-        projectFragment = new HandleFragment();
-        ft.add(R.id.fl_main_container, projectFragment);
-        fragmentList.add(projectFragment);
 
-        systemFragment = new SystemFragment();
+
+        SystemFragment  systemFragment = new SystemFragment();
         ft.add(R.id.fl_main_container, systemFragment);
         fragmentList.add(systemFragment);
 
@@ -128,13 +116,14 @@ public class MainActivity extends BaseActivity {
         ft.commit();
     }
 
-
-    /**
+     /**
      * 选中某个 Fragment
      *
      * @param index
      */
     private void selectFragment(int index) {
+         setStatusBarTranslucent(0);
+
         FragmentTransaction ft = fragmentManager.beginTransaction();
         for (int i = 0; i < fragmentList.size(); i++) {
             if (i == index) {
@@ -153,8 +142,7 @@ public class MainActivity extends BaseActivity {
     public void setStatusBarColor() {
         StatusBarUtil.setTransparentForImageViewInFragment(this, null);
     }
-
-    public void setStatusBarTranslucent(int alpha) {
+     public void setStatusBarTranslucent(int alpha) {
         StatusBarUtil.setTranslucentForImageViewInFragment(this, alpha, null);
     }
 

@@ -18,6 +18,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+
     }
 
     @Override
@@ -25,9 +26,12 @@ public class SplashActivity extends BaseActivity {
         super.onResume();
         String token = SharedPreferenceUtil.read(Constants.FILE_TOKEN, Constants.ACCESS_TOKEN, "");
         if (!TextUtils.isEmpty(token)) {
-            gotoMainActivity();
+             gotoMainActivity();
+
         } else {
-            gotoLoginActivity();
+           //gotoMainActivity();
+
+          gotoLoginActivity();
         }
     }
 

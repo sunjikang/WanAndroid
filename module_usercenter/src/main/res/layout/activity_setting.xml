@@ -23,7 +23,7 @@
             android:layout_marginTop="20dp"
             android:drawablePadding="10dp"
             android:hint="@string/please_input_host_hint"
-            android:text="http://10.2.8.154:8888/"/>
+            android:text="http://101.200.140.188:8901/" />
 
 
         <View
@@ -36,8 +36,8 @@
             style="@style/RegisterEditTextStyle"
             android:layout_marginTop="20dp"
             android:drawablePadding="10dp"
-            android:text="123"
-            android:hint="@string/please_input_only"/>
+            android:hint="@string/please_input_only"
+            android:text="7536d561a8a85dea" />
 
         <View
             android:layout_width="match_parent"

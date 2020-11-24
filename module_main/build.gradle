@@ -110,6 +110,7 @@ variants.all { variant ->
 
 dependencies {
     implementation project(':common_base')
+    implementation 'org.jetbrains:annotations-java5:15.0'
     // arouter-compiler
     annotationProcessor rootProject.ext.dependencies['arouter-compiler']
     annotationProcessor rootProject.ext.dependencies['glide-compiler']

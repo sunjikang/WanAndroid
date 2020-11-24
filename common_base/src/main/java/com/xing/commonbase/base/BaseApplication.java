@@ -14,6 +14,9 @@ import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.xing.commonbase.R;
 
+
+
+
 public class BaseApplication extends Application {
 
     private static BaseApplication application;
@@ -44,6 +47,7 @@ public class BaseApplication extends Application {
         application = this;
         initRouter(this);
     }
+
 
     /**
      * 初始化 ARouter
