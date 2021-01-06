@@ -13,11 +13,13 @@ import org.greenrobot.greendao.DaoException;
 import com.xing.manage.db.DaoSession;
 import com.xing.manage.db.FacilityDao;
 import com.xing.manage.db.AreaDao;
+import com.xing.manage.db.RecordDao;
+import com.xing.manage.db.InspectionDao;
 @Entity
 public class Area implements Parcelable {
-
-    public Long lineId;
     @Id(autoincrement = true)
+    public  Long mmid;
+    public Long lineId;
     public Long  id;//     "id":"1328154954527019008",
     public String  createBy;//             "createBy":"admin",
     public String  createTime;//           "createTime":"2020-11-16 09:56:31",
@@ -33,10 +35,24 @@ public class Area implements Parcelable {
     public String  standbyI;//         "standbyI":"",
     public String  standbyII;//         "standbyII":"",
     public String  standbyIII;//          "standbyIII":"",
+
     @ToMany(referencedJoinProperty = "areaId")
     public List<Facility> facilityList;//          "facilityList":
 
+    @ToMany(referencedJoinProperty = "areaId")
+    public List<Record> recordList;
+
+
+    @ToMany(referencedJoinProperty = "areaId")
+    public List<Inspection> inspectionList;
+
+
     protected Area(Parcel in) {
+        if (in.readByte() == 0) {
+            mmid = null;
+        } else {
+            mmid = in.readLong();
+        }
         if (in.readByte() == 0) {
             lineId = null;
         } else {
@@ -62,13 +78,16 @@ public class Area implements Parcelable {
         standbyII = in.readString();
         standbyIII = in.readString();
         facilityList = in.createTypedArrayList(Facility.CREATOR);
+        recordList = in.createTypedArrayList(Record.CREATOR);
+        inspectionList = in.createTypedArrayList(Inspection.CREATOR);
     }
 
-    @Generated(hash = 1453466474)
-    public Area(Long lineId, Long id, String createBy, String createTime,
+    @Generated(hash = 1209313541)
+    public Area(Long mmid, Long lineId, Long id, String createBy, String createTime,
             String updateBy, String updateTime, String delFlag, String openStatus,
             String areaCode, String title, String specialty, String unit,
             String remark, String standbyI, String standbyII, String standbyIII) {
+        this.mmid = mmid;
         this.lineId = lineId;
         this.id = id;
         this.createBy = createBy;
@@ -116,6 +135,12 @@ public class Area implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        if (mmid == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(mmid);
+        }
         if (lineId == null) {
             dest.writeByte((byte) 0);
         } else {
@@ -143,6 +168,16 @@ public class Area implements Parcelable {
         dest.writeString(standbyII);
         dest.writeString(standbyIII);
         dest.writeTypedList(facilityList);
+        dest.writeTypedList(recordList);
+        dest.writeTypedList(inspectionList);
+    }
+
+    public Long getMmid() {
+        return this.mmid;
+    }
+
+    public void setMmid(Long mmid) {
+        this.mmid = mmid;
     }
 
     public Long getLineId() {
@@ -277,7 +312,7 @@ public class Area implements Parcelable {
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 1613573610)
+    @Generated(hash = 1940506755)
     public List<Facility> getFacilityList() {
         if (facilityList == null) {
             final DaoSession daoSession = this.daoSession;
@@ -285,7 +320,8 @@ public class Area implements Parcelable {
                 throw new DaoException("Entity is detached from DAO context");
             }
             FacilityDao targetDao = daoSession.getFacilityDao();
-            List<Facility> facilityListNew = targetDao._queryArea_FacilityList(id);
+            List<Facility> facilityListNew = targetDao
+                    ._queryArea_FacilityList(mmid);
             synchronized (this) {
                 if (facilityList == null) {
                     facilityList = facilityListNew;
@@ -299,6 +335,63 @@ public class Area implements Parcelable {
     @Generated(hash = 2120366010)
     public synchronized void resetFacilityList() {
         facilityList = null;
+    }
+
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 609161292)
+    public List<Record> getRecordList() {
+        if (recordList == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            RecordDao targetDao = daoSession.getRecordDao();
+            List<Record> recordListNew = targetDao._queryArea_RecordList(mmid);
+            synchronized (this) {
+                if (recordList == null) {
+                    recordList = recordListNew;
+                }
+            }
+        }
+        return recordList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 1700181837)
+    public synchronized void resetRecordList() {
+        recordList = null;
+    }
+
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 972631052)
+    public List<Inspection> getInspectionList() {
+        if (inspectionList == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            InspectionDao targetDao = daoSession.getInspectionDao();
+            List<Inspection> inspectionListNew = targetDao
+                    ._queryArea_InspectionList(mmid);
+            synchronized (this) {
+                if (inspectionList == null) {
+                    inspectionList = inspectionListNew;
+                }
+            }
+        }
+        return inspectionList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 211230371)
+    public synchronized void resetInspectionList() {
+        inspectionList = null;
     }
 
     /**
@@ -342,30 +435,5 @@ public class Area implements Parcelable {
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getAreaDao() : null;
-    }
-
-    @Override
-    public String toString() {
-        return "Area{" +
-                "lineId=" + lineId +
-                ", id=" + id +
-                ", createBy='" + createBy + '\'' +
-                ", createTime='" + createTime + '\'' +
-                ", updateBy='" + updateBy + '\'' +
-                ", updateTime='" + updateTime + '\'' +
-                ", delFlag='" + delFlag + '\'' +
-                ", openStatus='" + openStatus + '\'' +
-                ", areaCode='" + areaCode + '\'' +
-                ", title='" + title + '\'' +
-                ", specialty='" + specialty + '\'' +
-                ", unit='" + unit + '\'' +
-                ", remark='" + remark + '\'' +
-                ", standbyI='" + standbyI + '\'' +
-                ", standbyII='" + standbyII + '\'' +
-                ", standbyIII='" + standbyIII + '\'' +
-                ", facilityList=" + facilityList +
-                ", daoSession=" + daoSession +
-                ", myDao=" + myDao +
-                '}';
     }
 }

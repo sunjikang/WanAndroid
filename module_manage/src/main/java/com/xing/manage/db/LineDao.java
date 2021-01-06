@@ -24,22 +24,26 @@ public class LineDao extends AbstractDao<Line, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property CreateBy = new Property(1, String.class, "createBy", false, "CREATE_BY");
-        public final static Property CreateTime = new Property(2, String.class, "createTime", false, "CREATE_TIME");
-        public final static Property UpdateBy = new Property(3, String.class, "updateBy", false, "UPDATE_BY");
-        public final static Property UpdateTime = new Property(4, String.class, "updateTime", false, "UPDATE_TIME");
-        public final static Property DelFlag = new Property(5, String.class, "delFlag", false, "DEL_FLAG");
-        public final static Property OpenStatus = new Property(6, String.class, "openStatus", false, "OPEN_STATUS");
-        public final static Property LineName = new Property(7, String.class, "lineName", false, "LINE_NAME");
-        public final static Property LineCode = new Property(8, String.class, "lineCode", false, "LINE_CODE");
-        public final static Property Post = new Property(9, String.class, "post", false, "POST");
-        public final static Property TaskType = new Property(10, String.class, "taskType", false, "TASK_TYPE");
-        public final static Property StartStatus = new Property(11, String.class, "startStatus", false, "START_STATUS");
-        public final static Property Remark = new Property(12, String.class, "remark", false, "REMARK");
-        public final static Property StandbyI = new Property(13, String.class, "standbyI", false, "STANDBY_I");
-        public final static Property StandbyII = new Property(14, String.class, "standbyII", false, "STANDBY_II");
-        public final static Property StandbyIII = new Property(15, String.class, "standbyIII", false, "STANDBY_III");
+        public final static Property Mmid = new Property(0, Long.class, "mmid", true, "_id");
+        public final static Property Id = new Property(1, Long.class, "id", false, "ID");
+        public final static Property CreateBy = new Property(2, String.class, "createBy", false, "CREATE_BY");
+        public final static Property CreateTime = new Property(3, String.class, "createTime", false, "CREATE_TIME");
+        public final static Property UpdateBy = new Property(4, String.class, "updateBy", false, "UPDATE_BY");
+        public final static Property UpdateTime = new Property(5, String.class, "updateTime", false, "UPDATE_TIME");
+        public final static Property DelFlag = new Property(6, String.class, "delFlag", false, "DEL_FLAG");
+        public final static Property OpenStatus = new Property(7, String.class, "openStatus", false, "OPEN_STATUS");
+        public final static Property Title = new Property(8, String.class, "title", false, "TITLE");
+        public final static Property LineCode = new Property(9, String.class, "lineCode", false, "LINE_CODE");
+        public final static Property Post = new Property(10, String.class, "post", false, "POST");
+        public final static Property TaskType = new Property(11, String.class, "taskType", false, "TASK_TYPE");
+        public final static Property StartStatus = new Property(12, String.class, "startStatus", false, "START_STATUS");
+        public final static Property Remark = new Property(13, String.class, "remark", false, "REMARK");
+        public final static Property StandbyI = new Property(14, String.class, "standbyI", false, "STANDBY_I");
+        public final static Property StandbyII = new Property(15, String.class, "standbyII", false, "STANDBY_II");
+        public final static Property StandbyIII = new Property(16, String.class, "standbyIII", false, "STANDBY_III");
+        public final static Property InspectionPeriod = new Property(17, String.class, "inspectionPeriod", false, "INSPECTION_PERIOD");
+        public final static Property StartCheckTime = new Property(18, Long.class, "startCheckTime", false, "START_CHECK_TIME");
+        public final static Property EndCheckTime = new Property(19, Long.class, "endCheckTime", false, "END_CHECK_TIME");
     }
 
     private DaoSession daoSession;
@@ -58,22 +62,26 @@ public class LineDao extends AbstractDao<Line, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"LINE\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"CREATE_BY\" TEXT," + // 1: createBy
-                "\"CREATE_TIME\" TEXT," + // 2: createTime
-                "\"UPDATE_BY\" TEXT," + // 3: updateBy
-                "\"UPDATE_TIME\" TEXT," + // 4: updateTime
-                "\"DEL_FLAG\" TEXT," + // 5: delFlag
-                "\"OPEN_STATUS\" TEXT," + // 6: openStatus
-                "\"LINE_NAME\" TEXT," + // 7: lineName
-                "\"LINE_CODE\" TEXT," + // 8: lineCode
-                "\"POST\" TEXT," + // 9: post
-                "\"TASK_TYPE\" TEXT," + // 10: taskType
-                "\"START_STATUS\" TEXT," + // 11: startStatus
-                "\"REMARK\" TEXT," + // 12: remark
-                "\"STANDBY_I\" TEXT," + // 13: standbyI
-                "\"STANDBY_II\" TEXT," + // 14: standbyII
-                "\"STANDBY_III\" TEXT);"); // 15: standbyIII
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: mmid
+                "\"ID\" INTEGER," + // 1: id
+                "\"CREATE_BY\" TEXT," + // 2: createBy
+                "\"CREATE_TIME\" TEXT," + // 3: createTime
+                "\"UPDATE_BY\" TEXT," + // 4: updateBy
+                "\"UPDATE_TIME\" TEXT," + // 5: updateTime
+                "\"DEL_FLAG\" TEXT," + // 6: delFlag
+                "\"OPEN_STATUS\" TEXT," + // 7: openStatus
+                "\"TITLE\" TEXT," + // 8: title
+                "\"LINE_CODE\" TEXT," + // 9: lineCode
+                "\"POST\" TEXT," + // 10: post
+                "\"TASK_TYPE\" TEXT," + // 11: taskType
+                "\"START_STATUS\" TEXT," + // 12: startStatus
+                "\"REMARK\" TEXT," + // 13: remark
+                "\"STANDBY_I\" TEXT," + // 14: standbyI
+                "\"STANDBY_II\" TEXT," + // 15: standbyII
+                "\"STANDBY_III\" TEXT," + // 16: standbyIII
+                "\"INSPECTION_PERIOD\" TEXT," + // 17: inspectionPeriod
+                "\"START_CHECK_TIME\" INTEGER," + // 18: startCheckTime
+                "\"END_CHECK_TIME\" INTEGER);"); // 19: endCheckTime
     }
 
     /** Drops the underlying database table. */
@@ -86,84 +94,104 @@ public class LineDao extends AbstractDao<Line, Long> {
     protected final void bindValues(DatabaseStatement stmt, Line entity) {
         stmt.clearBindings();
  
+        Long mmid = entity.getMmid();
+        if (mmid != null) {
+            stmt.bindLong(1, mmid);
+        }
+ 
         Long id = entity.getId();
         if (id != null) {
-            stmt.bindLong(1, id);
+            stmt.bindLong(2, id);
         }
  
         String createBy = entity.getCreateBy();
         if (createBy != null) {
-            stmt.bindString(2, createBy);
+            stmt.bindString(3, createBy);
         }
  
         String createTime = entity.getCreateTime();
         if (createTime != null) {
-            stmt.bindString(3, createTime);
+            stmt.bindString(4, createTime);
         }
  
         String updateBy = entity.getUpdateBy();
         if (updateBy != null) {
-            stmt.bindString(4, updateBy);
+            stmt.bindString(5, updateBy);
         }
  
         String updateTime = entity.getUpdateTime();
         if (updateTime != null) {
-            stmt.bindString(5, updateTime);
+            stmt.bindString(6, updateTime);
         }
  
         String delFlag = entity.getDelFlag();
         if (delFlag != null) {
-            stmt.bindString(6, delFlag);
+            stmt.bindString(7, delFlag);
         }
  
         String openStatus = entity.getOpenStatus();
         if (openStatus != null) {
-            stmt.bindString(7, openStatus);
+            stmt.bindString(8, openStatus);
         }
  
-        String lineName = entity.getLineName();
-        if (lineName != null) {
-            stmt.bindString(8, lineName);
+        String title = entity.getTitle();
+        if (title != null) {
+            stmt.bindString(9, title);
         }
  
         String lineCode = entity.getLineCode();
         if (lineCode != null) {
-            stmt.bindString(9, lineCode);
+            stmt.bindString(10, lineCode);
         }
  
         String post = entity.getPost();
         if (post != null) {
-            stmt.bindString(10, post);
+            stmt.bindString(11, post);
         }
  
         String taskType = entity.getTaskType();
         if (taskType != null) {
-            stmt.bindString(11, taskType);
+            stmt.bindString(12, taskType);
         }
  
         String startStatus = entity.getStartStatus();
         if (startStatus != null) {
-            stmt.bindString(12, startStatus);
+            stmt.bindString(13, startStatus);
         }
  
         String remark = entity.getRemark();
         if (remark != null) {
-            stmt.bindString(13, remark);
+            stmt.bindString(14, remark);
         }
  
         String standbyI = entity.getStandbyI();
         if (standbyI != null) {
-            stmt.bindString(14, standbyI);
+            stmt.bindString(15, standbyI);
         }
  
         String standbyII = entity.getStandbyII();
         if (standbyII != null) {
-            stmt.bindString(15, standbyII);
+            stmt.bindString(16, standbyII);
         }
  
         String standbyIII = entity.getStandbyIII();
         if (standbyIII != null) {
-            stmt.bindString(16, standbyIII);
+            stmt.bindString(17, standbyIII);
+        }
+ 
+        String inspectionPeriod = entity.getInspectionPeriod();
+        if (inspectionPeriod != null) {
+            stmt.bindString(18, inspectionPeriod);
+        }
+ 
+        Long startCheckTime = entity.getStartCheckTime();
+        if (startCheckTime != null) {
+            stmt.bindLong(19, startCheckTime);
+        }
+ 
+        Long endCheckTime = entity.getEndCheckTime();
+        if (endCheckTime != null) {
+            stmt.bindLong(20, endCheckTime);
         }
     }
 
@@ -171,84 +199,104 @@ public class LineDao extends AbstractDao<Line, Long> {
     protected final void bindValues(SQLiteStatement stmt, Line entity) {
         stmt.clearBindings();
  
+        Long mmid = entity.getMmid();
+        if (mmid != null) {
+            stmt.bindLong(1, mmid);
+        }
+ 
         Long id = entity.getId();
         if (id != null) {
-            stmt.bindLong(1, id);
+            stmt.bindLong(2, id);
         }
  
         String createBy = entity.getCreateBy();
         if (createBy != null) {
-            stmt.bindString(2, createBy);
+            stmt.bindString(3, createBy);
         }
  
         String createTime = entity.getCreateTime();
         if (createTime != null) {
-            stmt.bindString(3, createTime);
+            stmt.bindString(4, createTime);
         }
  
         String updateBy = entity.getUpdateBy();
         if (updateBy != null) {
-            stmt.bindString(4, updateBy);
+            stmt.bindString(5, updateBy);
         }
  
         String updateTime = entity.getUpdateTime();
         if (updateTime != null) {
-            stmt.bindString(5, updateTime);
+            stmt.bindString(6, updateTime);
         }
  
         String delFlag = entity.getDelFlag();
         if (delFlag != null) {
-            stmt.bindString(6, delFlag);
+            stmt.bindString(7, delFlag);
         }
  
         String openStatus = entity.getOpenStatus();
         if (openStatus != null) {
-            stmt.bindString(7, openStatus);
+            stmt.bindString(8, openStatus);
         }
  
-        String lineName = entity.getLineName();
-        if (lineName != null) {
-            stmt.bindString(8, lineName);
+        String title = entity.getTitle();
+        if (title != null) {
+            stmt.bindString(9, title);
         }
  
         String lineCode = entity.getLineCode();
         if (lineCode != null) {
-            stmt.bindString(9, lineCode);
+            stmt.bindString(10, lineCode);
         }
  
         String post = entity.getPost();
         if (post != null) {
-            stmt.bindString(10, post);
+            stmt.bindString(11, post);
         }
  
         String taskType = entity.getTaskType();
         if (taskType != null) {
-            stmt.bindString(11, taskType);
+            stmt.bindString(12, taskType);
         }
  
         String startStatus = entity.getStartStatus();
         if (startStatus != null) {
-            stmt.bindString(12, startStatus);
+            stmt.bindString(13, startStatus);
         }
  
         String remark = entity.getRemark();
         if (remark != null) {
-            stmt.bindString(13, remark);
+            stmt.bindString(14, remark);
         }
  
         String standbyI = entity.getStandbyI();
         if (standbyI != null) {
-            stmt.bindString(14, standbyI);
+            stmt.bindString(15, standbyI);
         }
  
         String standbyII = entity.getStandbyII();
         if (standbyII != null) {
-            stmt.bindString(15, standbyII);
+            stmt.bindString(16, standbyII);
         }
  
         String standbyIII = entity.getStandbyIII();
         if (standbyIII != null) {
-            stmt.bindString(16, standbyIII);
+            stmt.bindString(17, standbyIII);
+        }
+ 
+        String inspectionPeriod = entity.getInspectionPeriod();
+        if (inspectionPeriod != null) {
+            stmt.bindString(18, inspectionPeriod);
+        }
+ 
+        Long startCheckTime = entity.getStartCheckTime();
+        if (startCheckTime != null) {
+            stmt.bindLong(19, startCheckTime);
+        }
+ 
+        Long endCheckTime = entity.getEndCheckTime();
+        if (endCheckTime != null) {
+            stmt.bindLong(20, endCheckTime);
         }
     }
 
@@ -266,56 +314,64 @@ public class LineDao extends AbstractDao<Line, Long> {
     @Override
     public Line readEntity(Cursor cursor, int offset) {
         Line entity = new Line( //
-            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // createBy
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // createTime
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // updateBy
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // updateTime
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // delFlag
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // openStatus
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // lineName
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // lineCode
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // post
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // taskType
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // startStatus
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // remark
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // standbyI
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // standbyII
-            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15) // standbyIII
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // mmid
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // id
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // createBy
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // createTime
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // updateBy
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // updateTime
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // delFlag
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // openStatus
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // title
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // lineCode
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // post
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // taskType
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // startStatus
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // remark
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // standbyI
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // standbyII
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // standbyIII
+            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // inspectionPeriod
+            cursor.isNull(offset + 18) ? null : cursor.getLong(offset + 18), // startCheckTime
+            cursor.isNull(offset + 19) ? null : cursor.getLong(offset + 19) // endCheckTime
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, Line entity, int offset) {
-        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setCreateBy(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setCreateTime(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setUpdateBy(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setUpdateTime(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setDelFlag(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setOpenStatus(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setLineName(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setLineCode(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setPost(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setTaskType(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setStartStatus(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setRemark(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setStandbyI(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setStandbyII(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
-        entity.setStandbyIII(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setMmid(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setId(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setCreateBy(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setCreateTime(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setUpdateBy(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setUpdateTime(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setDelFlag(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setOpenStatus(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setTitle(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setLineCode(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setPost(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setTaskType(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setStartStatus(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setRemark(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setStandbyI(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setStandbyII(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setStandbyIII(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setInspectionPeriod(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
+        entity.setStartCheckTime(cursor.isNull(offset + 18) ? null : cursor.getLong(offset + 18));
+        entity.setEndCheckTime(cursor.isNull(offset + 19) ? null : cursor.getLong(offset + 19));
      }
     
     @Override
     protected final Long updateKeyAfterInsert(Line entity, long rowId) {
-        entity.setId(rowId);
+        entity.setMmid(rowId);
         return rowId;
     }
     
     @Override
     public Long getKey(Line entity) {
         if(entity != null) {
-            return entity.getId();
+            return entity.getMmid();
         } else {
             return null;
         }
@@ -323,7 +379,7 @@ public class LineDao extends AbstractDao<Line, Long> {
 
     @Override
     public boolean hasKey(Line entity) {
-        return entity.getId() != null;
+        return entity.getMmid() != null;
     }
 
     @Override

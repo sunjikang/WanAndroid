@@ -25,7 +25,7 @@ public class DaoMaster extends AbstractDaoMaster {
         FacilityDao.createTable(db, ifNotExists);
         InspectionDao.createTable(db, ifNotExists);
         LineDao.createTable(db, ifNotExists);
-        CheckNowDao.createTable(db, ifNotExists);
+        RecordDao.createTable(db, ifNotExists);
         ResourceDao.createTable(db, ifNotExists);
     }
 
@@ -35,7 +35,7 @@ public class DaoMaster extends AbstractDaoMaster {
         FacilityDao.dropTable(db, ifExists);
         InspectionDao.dropTable(db, ifExists);
         LineDao.dropTable(db, ifExists);
-        CheckNowDao.dropTable(db, ifExists);
+        RecordDao.dropTable(db, ifExists);
         ResourceDao.dropTable(db, ifExists);
     }
 
@@ -59,7 +59,7 @@ public class DaoMaster extends AbstractDaoMaster {
         registerDaoClass(FacilityDao.class);
         registerDaoClass(InspectionDao.class);
         registerDaoClass(LineDao.class);
-        registerDaoClass(CheckNowDao.class);
+        registerDaoClass(RecordDao.class);
         registerDaoClass(ResourceDao.class);
     }
 

@@ -151,10 +151,10 @@ public class ProgressManageFragment extends BaseMVPFragment<ProgressManagePresen
 
                         //流程分配
                           showDialog(result, 2);
-                    } else if (view.getId() == R.id.btn_change_model) {
+                    } else if (view.getId() == R.id.btn_upload) {
                          //转模型
                           showDialog(result, 3);
-                    }else if(view.getId()== R.id.btn_delete){
+                    }else if(view.getId()== R.id.btn_start_check){
                         //删除
 
                         new MaterialDialog.Builder(getContext()).title("确认删除吗？")

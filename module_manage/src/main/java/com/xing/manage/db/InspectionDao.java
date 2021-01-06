@@ -27,34 +27,42 @@ public class InspectionDao extends AbstractDao<Inspection, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property FacilityId = new Property(0, Long.class, "facilityId", false, "FACILITY_ID");
-        public final static Property Id = new Property(1, Long.class, "id", true, "_id");
-        public final static Property CreateBy = new Property(2, String.class, "createBy", false, "CREATE_BY");
-        public final static Property CreateTime = new Property(3, String.class, "createTime", false, "CREATE_TIME");
-        public final static Property UpdateBy = new Property(4, String.class, "updateBy", false, "UPDATE_BY");
-        public final static Property UpdateTime = new Property(5, String.class, "updateTime", false, "UPDATE_TIME");
-        public final static Property DelFlag = new Property(6, String.class, "delFlag", false, "DEL_FLAG");
-        public final static Property OpenStatus = new Property(7, String.class, "openStatus", false, "OPEN_STATUS");
-        public final static Property InspectionItemName = new Property(8, String.class, "inspectionItemName", false, "INSPECTION_ITEM_NAME");
-        public final static Property SamplingNumber = new Property(9, String.class, "samplingNumber", false, "SAMPLING_NUMBER");
-        public final static Property SampleFrequency = new Property(10, String.class, "sampleFrequency", false, "SAMPLE_FREQUENCY");
-        public final static Property DefaultSpeed = new Property(11, String.class, "defaultSpeed", false, "DEFAULT_SPEED");
-        public final static Property Unit = new Property(12, String.class, "unit", false, "UNIT");
-        public final static Property EquipmentLevel = new Property(13, String.class, "equipmentLevel", false, "EQUIPMENT_LEVEL");
-        public final static Property PollingType = new Property(14, String.class, "pollingType", false, "POLLING_TYPE");
-        public final static Property PollingStatus = new Property(15, String.class, "pollingStatus", false, "POLLING_STATUS");
-        public final static Property Emissivity = new Property(16, String.class, "emissivity", false, "EMISSIVITY");
-        public final static Property UpperUp = new Property(17, String.class, "upperUp", false, "UPPER_UP");
-        public final static Property Upper = new Property(18, String.class, "upper", false, "UPPER");
-        public final static Property Floor = new Property(19, String.class, "floor", false, "FLOOR");
-        public final static Property FloorFl = new Property(20, String.class, "floorFl", false, "FLOOR_FL");
-        public final static Property Remark = new Property(21, String.class, "remark", false, "REMARK");
-        public final static Property StandbyI = new Property(22, String.class, "standbyI", false, "STANDBY_I");
-        public final static Property StandbyII = new Property(23, String.class, "standbyII", false, "STANDBY_II");
-        public final static Property StandbyIII = new Property(24, String.class, "standbyIII", false, "STANDBY_III");
+        public final static Property Mmid = new Property(0, Long.class, "mmid", true, "_id");
+        public final static Property AreaId = new Property(1, Long.class, "areaId", false, "AREA_ID");
+        public final static Property LineId = new Property(2, Long.class, "lineId", false, "LINE_ID");
+        public final static Property FacilityId = new Property(3, Long.class, "facilityId", false, "FACILITY_ID");
+        public final static Property Id = new Property(4, Long.class, "id", false, "ID");
+        public final static Property CreateBy = new Property(5, String.class, "createBy", false, "CREATE_BY");
+        public final static Property CreateTime = new Property(6, String.class, "createTime", false, "CREATE_TIME");
+        public final static Property UpdateBy = new Property(7, String.class, "updateBy", false, "UPDATE_BY");
+        public final static Property UpdateTime = new Property(8, String.class, "updateTime", false, "UPDATE_TIME");
+        public final static Property DelFlag = new Property(9, String.class, "delFlag", false, "DEL_FLAG");
+        public final static Property OpenStatus = new Property(10, String.class, "openStatus", false, "OPEN_STATUS");
+        public final static Property InspectionItemName = new Property(11, String.class, "inspectionItemName", false, "INSPECTION_ITEM_NAME");
+        public final static Property SamplingNumber = new Property(12, String.class, "samplingNumber", false, "SAMPLING_NUMBER");
+        public final static Property SampleFrequency = new Property(13, String.class, "sampleFrequency", false, "SAMPLE_FREQUENCY");
+        public final static Property DefaultSpeed = new Property(14, String.class, "defaultSpeed", false, "DEFAULT_SPEED");
+        public final static Property Unit = new Property(15, String.class, "unit", false, "UNIT");
+        public final static Property EquipmentLevel = new Property(16, String.class, "equipmentLevel", false, "EQUIPMENT_LEVEL");
+        public final static Property PollingType = new Property(17, String.class, "pollingType", false, "POLLING_TYPE");
+        public final static Property PollingStatus = new Property(18, String.class, "pollingStatus", false, "POLLING_STATUS");
+        public final static Property Emissivity = new Property(19, String.class, "emissivity", false, "EMISSIVITY");
+        public final static Property UpperUp = new Property(20, String.class, "upperUp", false, "UPPER_UP");
+        public final static Property Upper = new Property(21, String.class, "upper", false, "UPPER");
+        public final static Property Floor = new Property(22, String.class, "floor", false, "FLOOR");
+        public final static Property FloorFl = new Property(23, String.class, "floorFl", false, "FLOOR_FL");
+        public final static Property Remark = new Property(24, String.class, "remark", false, "REMARK");
+        public final static Property StandbyI = new Property(25, String.class, "standbyI", false, "STANDBY_I");
+        public final static Property StandbyII = new Property(26, String.class, "standbyII", false, "STANDBY_II");
+        public final static Property StandbyIII = new Property(27, String.class, "standbyIII", false, "STANDBY_III");
+        public final static Property IsCheckOver = new Property(28, Boolean.class, "isCheckOver", false, "IS_CHECK_OVER");
     }
 
+    private DaoSession daoSession;
+
+    private Query<Inspection> area_InspectionListQuery;
     private Query<Inspection> facility_InspectionItemListQuery;
+    private Query<Inspection> line_InspectionListQuery;
 
     public InspectionDao(DaoConfig config) {
         super(config);
@@ -62,37 +70,42 @@ public class InspectionDao extends AbstractDao<Inspection, Long> {
     
     public InspectionDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"INSPECTION\" (" + //
-                "\"FACILITY_ID\" INTEGER," + // 0: facilityId
-                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 1: id
-                "\"CREATE_BY\" TEXT," + // 2: createBy
-                "\"CREATE_TIME\" TEXT," + // 3: createTime
-                "\"UPDATE_BY\" TEXT," + // 4: updateBy
-                "\"UPDATE_TIME\" TEXT," + // 5: updateTime
-                "\"DEL_FLAG\" TEXT," + // 6: delFlag
-                "\"OPEN_STATUS\" TEXT," + // 7: openStatus
-                "\"INSPECTION_ITEM_NAME\" TEXT," + // 8: inspectionItemName
-                "\"SAMPLING_NUMBER\" TEXT," + // 9: samplingNumber
-                "\"SAMPLE_FREQUENCY\" TEXT," + // 10: sampleFrequency
-                "\"DEFAULT_SPEED\" TEXT," + // 11: defaultSpeed
-                "\"UNIT\" TEXT," + // 12: unit
-                "\"EQUIPMENT_LEVEL\" TEXT," + // 13: equipmentLevel
-                "\"POLLING_TYPE\" TEXT," + // 14: pollingType
-                "\"POLLING_STATUS\" TEXT," + // 15: pollingStatus
-                "\"EMISSIVITY\" TEXT," + // 16: emissivity
-                "\"UPPER_UP\" TEXT," + // 17: upperUp
-                "\"UPPER\" TEXT," + // 18: upper
-                "\"FLOOR\" TEXT," + // 19: floor
-                "\"FLOOR_FL\" TEXT," + // 20: floorFl
-                "\"REMARK\" TEXT," + // 21: remark
-                "\"STANDBY_I\" TEXT," + // 22: standbyI
-                "\"STANDBY_II\" TEXT," + // 23: standbyII
-                "\"STANDBY_III\" TEXT);"); // 24: standbyIII
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: mmid
+                "\"AREA_ID\" INTEGER," + // 1: areaId
+                "\"LINE_ID\" INTEGER," + // 2: lineId
+                "\"FACILITY_ID\" INTEGER," + // 3: facilityId
+                "\"ID\" INTEGER," + // 4: id
+                "\"CREATE_BY\" TEXT," + // 5: createBy
+                "\"CREATE_TIME\" TEXT," + // 6: createTime
+                "\"UPDATE_BY\" TEXT," + // 7: updateBy
+                "\"UPDATE_TIME\" TEXT," + // 8: updateTime
+                "\"DEL_FLAG\" TEXT," + // 9: delFlag
+                "\"OPEN_STATUS\" TEXT," + // 10: openStatus
+                "\"INSPECTION_ITEM_NAME\" TEXT," + // 11: inspectionItemName
+                "\"SAMPLING_NUMBER\" TEXT," + // 12: samplingNumber
+                "\"SAMPLE_FREQUENCY\" TEXT," + // 13: sampleFrequency
+                "\"DEFAULT_SPEED\" TEXT," + // 14: defaultSpeed
+                "\"UNIT\" TEXT," + // 15: unit
+                "\"EQUIPMENT_LEVEL\" TEXT," + // 16: equipmentLevel
+                "\"POLLING_TYPE\" TEXT," + // 17: pollingType
+                "\"POLLING_STATUS\" TEXT," + // 18: pollingStatus
+                "\"EMISSIVITY\" TEXT," + // 19: emissivity
+                "\"UPPER_UP\" TEXT," + // 20: upperUp
+                "\"UPPER\" TEXT," + // 21: upper
+                "\"FLOOR\" TEXT," + // 22: floor
+                "\"FLOOR_FL\" TEXT," + // 23: floorFl
+                "\"REMARK\" TEXT," + // 24: remark
+                "\"STANDBY_I\" TEXT," + // 25: standbyI
+                "\"STANDBY_II\" TEXT," + // 26: standbyII
+                "\"STANDBY_III\" TEXT," + // 27: standbyIII
+                "\"IS_CHECK_OVER\" INTEGER);"); // 28: isCheckOver
     }
 
     /** Drops the underlying database table. */
@@ -105,129 +118,149 @@ public class InspectionDao extends AbstractDao<Inspection, Long> {
     protected final void bindValues(DatabaseStatement stmt, Inspection entity) {
         stmt.clearBindings();
  
+        Long mmid = entity.getMmid();
+        if (mmid != null) {
+            stmt.bindLong(1, mmid);
+        }
+ 
+        Long areaId = entity.getAreaId();
+        if (areaId != null) {
+            stmt.bindLong(2, areaId);
+        }
+ 
+        Long lineId = entity.getLineId();
+        if (lineId != null) {
+            stmt.bindLong(3, lineId);
+        }
+ 
         Long facilityId = entity.getFacilityId();
         if (facilityId != null) {
-            stmt.bindLong(1, facilityId);
+            stmt.bindLong(4, facilityId);
         }
  
         Long id = entity.getId();
         if (id != null) {
-            stmt.bindLong(2, id);
+            stmt.bindLong(5, id);
         }
  
         String createBy = entity.getCreateBy();
         if (createBy != null) {
-            stmt.bindString(3, createBy);
+            stmt.bindString(6, createBy);
         }
  
         String createTime = entity.getCreateTime();
         if (createTime != null) {
-            stmt.bindString(4, createTime);
+            stmt.bindString(7, createTime);
         }
  
         String updateBy = entity.getUpdateBy();
         if (updateBy != null) {
-            stmt.bindString(5, updateBy);
+            stmt.bindString(8, updateBy);
         }
  
         String updateTime = entity.getUpdateTime();
         if (updateTime != null) {
-            stmt.bindString(6, updateTime);
+            stmt.bindString(9, updateTime);
         }
  
         String delFlag = entity.getDelFlag();
         if (delFlag != null) {
-            stmt.bindString(7, delFlag);
+            stmt.bindString(10, delFlag);
         }
  
         String openStatus = entity.getOpenStatus();
         if (openStatus != null) {
-            stmt.bindString(8, openStatus);
+            stmt.bindString(11, openStatus);
         }
  
         String inspectionItemName = entity.getInspectionItemName();
         if (inspectionItemName != null) {
-            stmt.bindString(9, inspectionItemName);
+            stmt.bindString(12, inspectionItemName);
         }
  
         String samplingNumber = entity.getSamplingNumber();
         if (samplingNumber != null) {
-            stmt.bindString(10, samplingNumber);
+            stmt.bindString(13, samplingNumber);
         }
  
         String sampleFrequency = entity.getSampleFrequency();
         if (sampleFrequency != null) {
-            stmt.bindString(11, sampleFrequency);
+            stmt.bindString(14, sampleFrequency);
         }
  
         String defaultSpeed = entity.getDefaultSpeed();
         if (defaultSpeed != null) {
-            stmt.bindString(12, defaultSpeed);
+            stmt.bindString(15, defaultSpeed);
         }
  
         String unit = entity.getUnit();
         if (unit != null) {
-            stmt.bindString(13, unit);
+            stmt.bindString(16, unit);
         }
  
         String equipmentLevel = entity.getEquipmentLevel();
         if (equipmentLevel != null) {
-            stmt.bindString(14, equipmentLevel);
+            stmt.bindString(17, equipmentLevel);
         }
  
         String pollingType = entity.getPollingType();
         if (pollingType != null) {
-            stmt.bindString(15, pollingType);
+            stmt.bindString(18, pollingType);
         }
  
         String pollingStatus = entity.getPollingStatus();
         if (pollingStatus != null) {
-            stmt.bindString(16, pollingStatus);
+            stmt.bindString(19, pollingStatus);
         }
  
         String emissivity = entity.getEmissivity();
         if (emissivity != null) {
-            stmt.bindString(17, emissivity);
+            stmt.bindString(20, emissivity);
         }
  
         String upperUp = entity.getUpperUp();
         if (upperUp != null) {
-            stmt.bindString(18, upperUp);
+            stmt.bindString(21, upperUp);
         }
  
         String upper = entity.getUpper();
         if (upper != null) {
-            stmt.bindString(19, upper);
+            stmt.bindString(22, upper);
         }
  
         String floor = entity.getFloor();
         if (floor != null) {
-            stmt.bindString(20, floor);
+            stmt.bindString(23, floor);
         }
  
         String floorFl = entity.getFloorFl();
         if (floorFl != null) {
-            stmt.bindString(21, floorFl);
+            stmt.bindString(24, floorFl);
         }
  
         String remark = entity.getRemark();
         if (remark != null) {
-            stmt.bindString(22, remark);
+            stmt.bindString(25, remark);
         }
  
         String standbyI = entity.getStandbyI();
         if (standbyI != null) {
-            stmt.bindString(23, standbyI);
+            stmt.bindString(26, standbyI);
         }
  
         String standbyII = entity.getStandbyII();
         if (standbyII != null) {
-            stmt.bindString(24, standbyII);
+            stmt.bindString(27, standbyII);
         }
  
         String standbyIII = entity.getStandbyIII();
         if (standbyIII != null) {
-            stmt.bindString(25, standbyIII);
+            stmt.bindString(28, standbyIII);
+        }
+ 
+        Boolean isCheckOver = entity.getIsCheckOver();
+        if (isCheckOver != null) {
+            stmt.bindLong(29, isCheckOver ? 1L: 0L);
         }
     }
 
@@ -235,208 +268,242 @@ public class InspectionDao extends AbstractDao<Inspection, Long> {
     protected final void bindValues(SQLiteStatement stmt, Inspection entity) {
         stmt.clearBindings();
  
+        Long mmid = entity.getMmid();
+        if (mmid != null) {
+            stmt.bindLong(1, mmid);
+        }
+ 
+        Long areaId = entity.getAreaId();
+        if (areaId != null) {
+            stmt.bindLong(2, areaId);
+        }
+ 
+        Long lineId = entity.getLineId();
+        if (lineId != null) {
+            stmt.bindLong(3, lineId);
+        }
+ 
         Long facilityId = entity.getFacilityId();
         if (facilityId != null) {
-            stmt.bindLong(1, facilityId);
+            stmt.bindLong(4, facilityId);
         }
  
         Long id = entity.getId();
         if (id != null) {
-            stmt.bindLong(2, id);
+            stmt.bindLong(5, id);
         }
  
         String createBy = entity.getCreateBy();
         if (createBy != null) {
-            stmt.bindString(3, createBy);
+            stmt.bindString(6, createBy);
         }
  
         String createTime = entity.getCreateTime();
         if (createTime != null) {
-            stmt.bindString(4, createTime);
+            stmt.bindString(7, createTime);
         }
  
         String updateBy = entity.getUpdateBy();
         if (updateBy != null) {
-            stmt.bindString(5, updateBy);
+            stmt.bindString(8, updateBy);
         }
  
         String updateTime = entity.getUpdateTime();
         if (updateTime != null) {
-            stmt.bindString(6, updateTime);
+            stmt.bindString(9, updateTime);
         }
  
         String delFlag = entity.getDelFlag();
         if (delFlag != null) {
-            stmt.bindString(7, delFlag);
+            stmt.bindString(10, delFlag);
         }
  
         String openStatus = entity.getOpenStatus();
         if (openStatus != null) {
-            stmt.bindString(8, openStatus);
+            stmt.bindString(11, openStatus);
         }
  
         String inspectionItemName = entity.getInspectionItemName();
         if (inspectionItemName != null) {
-            stmt.bindString(9, inspectionItemName);
+            stmt.bindString(12, inspectionItemName);
         }
  
         String samplingNumber = entity.getSamplingNumber();
         if (samplingNumber != null) {
-            stmt.bindString(10, samplingNumber);
+            stmt.bindString(13, samplingNumber);
         }
  
         String sampleFrequency = entity.getSampleFrequency();
         if (sampleFrequency != null) {
-            stmt.bindString(11, sampleFrequency);
+            stmt.bindString(14, sampleFrequency);
         }
  
         String defaultSpeed = entity.getDefaultSpeed();
         if (defaultSpeed != null) {
-            stmt.bindString(12, defaultSpeed);
+            stmt.bindString(15, defaultSpeed);
         }
  
         String unit = entity.getUnit();
         if (unit != null) {
-            stmt.bindString(13, unit);
+            stmt.bindString(16, unit);
         }
  
         String equipmentLevel = entity.getEquipmentLevel();
         if (equipmentLevel != null) {
-            stmt.bindString(14, equipmentLevel);
+            stmt.bindString(17, equipmentLevel);
         }
  
         String pollingType = entity.getPollingType();
         if (pollingType != null) {
-            stmt.bindString(15, pollingType);
+            stmt.bindString(18, pollingType);
         }
  
         String pollingStatus = entity.getPollingStatus();
         if (pollingStatus != null) {
-            stmt.bindString(16, pollingStatus);
+            stmt.bindString(19, pollingStatus);
         }
  
         String emissivity = entity.getEmissivity();
         if (emissivity != null) {
-            stmt.bindString(17, emissivity);
+            stmt.bindString(20, emissivity);
         }
  
         String upperUp = entity.getUpperUp();
         if (upperUp != null) {
-            stmt.bindString(18, upperUp);
+            stmt.bindString(21, upperUp);
         }
  
         String upper = entity.getUpper();
         if (upper != null) {
-            stmt.bindString(19, upper);
+            stmt.bindString(22, upper);
         }
  
         String floor = entity.getFloor();
         if (floor != null) {
-            stmt.bindString(20, floor);
+            stmt.bindString(23, floor);
         }
  
         String floorFl = entity.getFloorFl();
         if (floorFl != null) {
-            stmt.bindString(21, floorFl);
+            stmt.bindString(24, floorFl);
         }
  
         String remark = entity.getRemark();
         if (remark != null) {
-            stmt.bindString(22, remark);
+            stmt.bindString(25, remark);
         }
  
         String standbyI = entity.getStandbyI();
         if (standbyI != null) {
-            stmt.bindString(23, standbyI);
+            stmt.bindString(26, standbyI);
         }
  
         String standbyII = entity.getStandbyII();
         if (standbyII != null) {
-            stmt.bindString(24, standbyII);
+            stmt.bindString(27, standbyII);
         }
  
         String standbyIII = entity.getStandbyIII();
         if (standbyIII != null) {
-            stmt.bindString(25, standbyIII);
+            stmt.bindString(28, standbyIII);
+        }
+ 
+        Boolean isCheckOver = entity.getIsCheckOver();
+        if (isCheckOver != null) {
+            stmt.bindLong(29, isCheckOver ? 1L: 0L);
         }
     }
 
     @Override
+    protected final void attachEntity(Inspection entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
+    }
+
+    @Override
     public Long readKey(Cursor cursor, int offset) {
-        return cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1);
+        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
 
     @Override
     public Inspection readEntity(Cursor cursor, int offset) {
         Inspection entity = new Inspection( //
-            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // facilityId
-            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // id
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // createBy
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // createTime
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // updateBy
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // updateTime
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // delFlag
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // openStatus
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // inspectionItemName
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // samplingNumber
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // sampleFrequency
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // defaultSpeed
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // unit
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // equipmentLevel
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // pollingType
-            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // pollingStatus
-            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // emissivity
-            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // upperUp
-            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // upper
-            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // floor
-            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // floorFl
-            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // remark
-            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // standbyI
-            cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23), // standbyII
-            cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24) // standbyIII
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // mmid
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // areaId
+            cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // lineId
+            cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // facilityId
+            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // id
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // createBy
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // createTime
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // updateBy
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // updateTime
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // delFlag
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // openStatus
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // inspectionItemName
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // samplingNumber
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // sampleFrequency
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // defaultSpeed
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // unit
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // equipmentLevel
+            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // pollingType
+            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // pollingStatus
+            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // emissivity
+            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // upperUp
+            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // upper
+            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // floor
+            cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23), // floorFl
+            cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24), // remark
+            cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25), // standbyI
+            cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26), // standbyII
+            cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27), // standbyIII
+            cursor.isNull(offset + 28) ? null : cursor.getShort(offset + 28) != 0 // isCheckOver
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, Inspection entity, int offset) {
-        entity.setFacilityId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setId(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
-        entity.setCreateBy(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setCreateTime(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setUpdateBy(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setUpdateTime(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setDelFlag(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setOpenStatus(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setInspectionItemName(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setSamplingNumber(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setSampleFrequency(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setDefaultSpeed(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setUnit(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setEquipmentLevel(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setPollingType(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
-        entity.setPollingStatus(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
-        entity.setEmissivity(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
-        entity.setUpperUp(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
-        entity.setUpper(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
-        entity.setFloor(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
-        entity.setFloorFl(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
-        entity.setRemark(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
-        entity.setStandbyI(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
-        entity.setStandbyII(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
-        entity.setStandbyIII(cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24));
+        entity.setMmid(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setAreaId(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setLineId(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
+        entity.setFacilityId(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
+        entity.setId(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
+        entity.setCreateBy(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setCreateTime(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setUpdateBy(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setUpdateTime(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setDelFlag(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setOpenStatus(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setInspectionItemName(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setSamplingNumber(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setSampleFrequency(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setDefaultSpeed(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setUnit(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setEquipmentLevel(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setPollingType(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
+        entity.setPollingStatus(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
+        entity.setEmissivity(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
+        entity.setUpperUp(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
+        entity.setUpper(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
+        entity.setFloor(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
+        entity.setFloorFl(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
+        entity.setRemark(cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24));
+        entity.setStandbyI(cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25));
+        entity.setStandbyII(cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26));
+        entity.setStandbyIII(cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27));
+        entity.setIsCheckOver(cursor.isNull(offset + 28) ? null : cursor.getShort(offset + 28) != 0);
      }
     
     @Override
     protected final Long updateKeyAfterInsert(Inspection entity, long rowId) {
-        entity.setId(rowId);
+        entity.setMmid(rowId);
         return rowId;
     }
     
     @Override
     public Long getKey(Inspection entity) {
         if(entity != null) {
-            return entity.getId();
+            return entity.getMmid();
         } else {
             return null;
         }
@@ -444,7 +511,7 @@ public class InspectionDao extends AbstractDao<Inspection, Long> {
 
     @Override
     public boolean hasKey(Inspection entity) {
-        return entity.getId() != null;
+        return entity.getMmid() != null;
     }
 
     @Override
@@ -452,6 +519,20 @@ public class InspectionDao extends AbstractDao<Inspection, Long> {
         return true;
     }
     
+    /** Internal query to resolve the "inspectionList" to-many relationship of Area. */
+    public List<Inspection> _queryArea_InspectionList(Long areaId) {
+        synchronized (this) {
+            if (area_InspectionListQuery == null) {
+                QueryBuilder<Inspection> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.AreaId.eq(null));
+                area_InspectionListQuery = queryBuilder.build();
+            }
+        }
+        Query<Inspection> query = area_InspectionListQuery.forCurrentThread();
+        query.setParameter(0, areaId);
+        return query.list();
+    }
+
     /** Internal query to resolve the "inspectionItemList" to-many relationship of Facility. */
     public List<Inspection> _queryFacility_InspectionItemList(Long facilityId) {
         synchronized (this) {
@@ -463,6 +544,20 @@ public class InspectionDao extends AbstractDao<Inspection, Long> {
         }
         Query<Inspection> query = facility_InspectionItemListQuery.forCurrentThread();
         query.setParameter(0, facilityId);
+        return query.list();
+    }
+
+    /** Internal query to resolve the "inspectionList" to-many relationship of Line. */
+    public List<Inspection> _queryLine_InspectionList(Long lineId) {
+        synchronized (this) {
+            if (line_InspectionListQuery == null) {
+                QueryBuilder<Inspection> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.LineId.eq(null));
+                line_InspectionListQuery = queryBuilder.build();
+            }
+        }
+        Query<Inspection> query = line_InspectionListQuery.forCurrentThread();
+        query.setParameter(0, lineId);
         return query.list();
     }
 

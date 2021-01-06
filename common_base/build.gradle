@@ -28,7 +28,6 @@ android {
 }
 
 dependencies {
-    api 'com.github.chenBingX:SuperTextView:v3.0.0'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api rootProject.ext.dependencies['appcompat-v7']
     api rootProject.ext.dependencies['design']
@@ -46,9 +45,10 @@ dependencies {
     api rootProject.ext.dependencies['okhttp']
     api rootProject.ext.dependencies['logging-interceptor']
     api rootProject.ext.dependencies['fastjson']
-    api rootProject.ext.dependencies['recycler-adapter-helper']
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
     api rootProject.ext.dependencies['glide']
     implementation 'com.github.liys666666:LDialog:V1.0.4'
+    api 'com.github.chenBingX:SuperTextView:v3.1.4'
     annotationProcessor rootProject.ext.dependencies['glide-compiler']
 
     // butterknife

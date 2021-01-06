@@ -135,7 +135,7 @@ public class FinishedFragment extends BaseMVPFragment<FinishedPresenter> impleme
                         //审核详情
                         ToastUtil.show(getContext(),"审核详情");
                         showDialog(result, 1);
-                    } else if (view.getId() == R.id.btn_change_model) {
+                    } else if (view.getId() == R.id.btn_upload) {
                         ToastUtil.show(getContext(),"表单数据");
 
                         //表单详情
@@ -143,7 +143,7 @@ public class FinishedFragment extends BaseMVPFragment<FinishedPresenter> impleme
                                .build("/manage/HistoryActivity")
                                .withString("procInstId", result.getDeployId())
                                .navigation();
-                    } else if (view.getId() == R.id.btn_delete) {
+                    } else if (view.getId() == R.id.btn_start_check) {
 
                        new MaterialDialog.Builder(getContext()).title("确认删除吗？")
                                .positiveText("确定") //肯定按键

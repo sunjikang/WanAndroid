@@ -83,7 +83,7 @@ public interface ManageApiService {
      *   http://10.2.8.201:8888/xboot/appPush/getAllLine
       *   accessToken    ced577f0a2fb45e0811e06394595b849
      */
-    @GET("xboot/actTask/historicFlow/{id}")
+    @GET("xboot/appPush/getAllLine")
     Observable<BaseResponse<List<Line>>> getAllLine();
     /**
      * 任务节点审批通过

@@ -143,12 +143,12 @@ public class ModelManageFragment extends BaseMVPFragment<ModelManagePresenter> i
                                 .build("/manage/HistoryActivity")
                                 .withString("procInstId", result.getId())
                                 .navigation();
-                    } else if (view.getId() == R.id.btn_change_model) {
+                    } else if (view.getId() == R.id.btn_upload) {
                         ToastUtil.show(getContext(),"表单数据");
 
                         //表单详情
                            showDialog(result, 2);
-                    } else if (view.getId() == R.id.btn_delete) {
+                    } else if (view.getId() == R.id.btn_start_check) {
 
                         new MaterialDialog.Builder(getContext()).title("确认删除吗？")
                                 .positiveText("确定") //肯定按键

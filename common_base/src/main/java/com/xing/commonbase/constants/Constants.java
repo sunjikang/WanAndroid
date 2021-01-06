@@ -35,5 +35,8 @@ public class Constants {
     public static final String DEVICE_UNIQUE_CODE = "deviceUniqueCode";
 
 
+    //模块管理
+    public static final String MODLE_NAME="model_name";
+
 
 }

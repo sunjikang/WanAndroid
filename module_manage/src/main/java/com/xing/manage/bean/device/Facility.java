@@ -13,10 +13,14 @@ import org.greenrobot.greendao.DaoException;
 import com.xing.manage.db.DaoSession;
 import com.xing.manage.db.InspectionDao;
 import com.xing.manage.db.FacilityDao;
+import com.xing.manage.db.RecordDao;
 @Entity
 public class Facility implements Parcelable {
-    public Long areaId;
     @Id(autoincrement = true)
+    public  Long mmid;
+
+    public Long lineId;
+    public Long areaId;
     public Long  id;//         "id":"1326855914325676033",
     public String  createBy;//               "createBy":"admin",
     public String  createTime;//                "createTime":"2020-11-12 19:54:36",
@@ -39,11 +43,60 @@ public class Facility implements Parcelable {
     public String  typeCode;//              "typeCode":"LX-B",
     public String  specialty;//              "specialty":"ZY-QJ",
     public String  sysCode;//              "sysCode":null,
-    @ToMany(referencedJoinProperty = "facilityId")
-    public List<Inspection> inspectionItemList;//              "inspectionItemList
 
+
+    @ToMany(referencedJoinProperty = "facilityId")
+    public List<Inspection> inspectionItemList;//巡检项列表
+
+    @ToMany(referencedJoinProperty = "facilityId")
+    public List<Record> recordList;        //对应记录列表
+
+    @Override
+    public String toString() {
+        return "Facility{" +
+                "mmid=" + mmid +
+                ", lineId=" + lineId +
+                ", areaId=" + areaId +
+                ", id=" + id +
+                ", createBy='" + createBy + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", updateBy='" + updateBy + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                ", delFlag='" + delFlag + '\'' +
+                ", openStatus='" + openStatus + '\'' +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", parentId='" + parentId + '\'' +
+                ", kksCode='" + kksCode + '\'' +
+                ", isMain='" + isMain + '\'' +
+                ", type='" + type + '\'' +
+                ", scaleModel='" + scaleModel + '\'' +
+                ", productCompany='" + productCompany + '\'' +
+                ", productTime='" + productTime + '\'' +
+                ", debugCompany='" + debugCompany + '\'' +
+                ", installNumber='" + installNumber + '\'' +
+                ", installPosition='" + installPosition + '\'' +
+                ", typeCode='" + typeCode + '\'' +
+                ", specialty='" + specialty + '\'' +
+                ", sysCode='" + sysCode + '\'' +
+                ", inspectionItemList=" + inspectionItemList +
+                ", recordList=" + recordList +
+                ", daoSession=" + daoSession +
+                ", myDao=" + myDao +
+                '}';
+    }
 
     protected Facility(Parcel in) {
+        if (in.readByte() == 0) {
+            mmid = null;
+        } else {
+            mmid = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            lineId = null;
+        } else {
+            lineId = in.readLong();
+        }
         if (in.readByte() == 0) {
             areaId = null;
         } else {
@@ -76,15 +129,18 @@ public class Facility implements Parcelable {
         specialty = in.readString();
         sysCode = in.readString();
         inspectionItemList = in.createTypedArrayList(Inspection.CREATOR);
+        recordList = in.createTypedArrayList(Record.CREATOR);
     }
 
-    @Generated(hash = 1002126246)
-    public Facility(Long areaId, Long id, String createBy, String createTime, String updateBy,
-            String updateTime, String delFlag, String openStatus, String code, String name,
-            String parentId, String kksCode, String isMain, String type, String scaleModel,
-            String productCompany, String productTime, String debugCompany,
-            String installNumber, String installPosition, String typeCode, String specialty,
-            String sysCode) {
+    @Generated(hash = 1850887193)
+    public Facility(Long mmid, Long lineId, Long areaId, Long id, String createBy,
+            String createTime, String updateBy, String updateTime, String delFlag,
+            String openStatus, String code, String name, String parentId, String kksCode,
+            String isMain, String type, String scaleModel, String productCompany,
+            String productTime, String debugCompany, String installNumber,
+            String installPosition, String typeCode, String specialty, String sysCode) {
+        this.mmid = mmid;
+        this.lineId = lineId;
         this.areaId = areaId;
         this.id = id;
         this.createBy = createBy;
@@ -125,9 +181,11 @@ public class Facility implements Parcelable {
             return new Facility[size];
         }
     };
+
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
+
     /** Used for active entity operations. */
     @Generated(hash = 2017034215)
     private transient FacilityDao myDao;
@@ -139,6 +197,18 @@ public class Facility implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        if (mmid == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(mmid);
+        }
+        if (lineId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(lineId);
+        }
         if (areaId == null) {
             dest.writeByte((byte) 0);
         } else {
@@ -173,6 +243,23 @@ public class Facility implements Parcelable {
         dest.writeString(specialty);
         dest.writeString(sysCode);
         dest.writeTypedList(inspectionItemList);
+        dest.writeTypedList(recordList);
+    }
+
+    public Long getMmid() {
+        return this.mmid;
+    }
+
+    public void setMmid(Long mmid) {
+        this.mmid = mmid;
+    }
+
+    public Long getLineId() {
+        return this.lineId;
+    }
+
+    public void setLineId(Long lineId) {
+        this.lineId = lineId;
     }
 
     public Long getAreaId() {
@@ -363,7 +450,7 @@ public class Facility implements Parcelable {
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 1269154927)
+    @Generated(hash = 900474277)
     public List<Inspection> getInspectionItemList() {
         if (inspectionItemList == null) {
             final DaoSession daoSession = this.daoSession;
@@ -372,7 +459,7 @@ public class Facility implements Parcelable {
             }
             InspectionDao targetDao = daoSession.getInspectionDao();
             List<Inspection> inspectionItemListNew = targetDao
-                    ._queryFacility_InspectionItemList(id);
+                    ._queryFacility_InspectionItemList(mmid);
             synchronized (this) {
                 if (inspectionItemList == null) {
                     inspectionItemList = inspectionItemListNew;
@@ -386,6 +473,34 @@ public class Facility implements Parcelable {
     @Generated(hash = 1883222590)
     public synchronized void resetInspectionItemList() {
         inspectionItemList = null;
+    }
+
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 492902806)
+    public List<Record> getRecordList() {
+        if (recordList == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            RecordDao targetDao = daoSession.getRecordDao();
+            List<Record> recordListNew = targetDao._queryFacility_RecordList(mmid);
+            synchronized (this) {
+                if (recordList == null) {
+                    recordList = recordListNew;
+                }
+            }
+        }
+        return recordList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 1700181837)
+    public synchronized void resetRecordList() {
+        recordList = null;
     }
 
     /**
@@ -429,37 +544,5 @@ public class Facility implements Parcelable {
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getFacilityDao() : null;
-    }
-
-    @Override
-    public String toString() {
-        return "Facility{" +
-                "areaId=" + areaId +
-                ", id=" + id +
-                ", createBy='" + createBy + '\'' +
-                ", createTime='" + createTime + '\'' +
-                ", updateBy='" + updateBy + '\'' +
-                ", updateTime='" + updateTime + '\'' +
-                ", delFlag='" + delFlag + '\'' +
-                ", openStatus='" + openStatus + '\'' +
-                ", code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", parentId='" + parentId + '\'' +
-                ", kksCode='" + kksCode + '\'' +
-                ", isMain='" + isMain + '\'' +
-                ", type='" + type + '\'' +
-                ", scaleModel='" + scaleModel + '\'' +
-                ", productCompany='" + productCompany + '\'' +
-                ", productTime='" + productTime + '\'' +
-                ", debugCompany='" + debugCompany + '\'' +
-                ", installNumber='" + installNumber + '\'' +
-                ", installPosition='" + installPosition + '\'' +
-                ", typeCode='" + typeCode + '\'' +
-                ", specialty='" + specialty + '\'' +
-                ", sysCode='" + sysCode + '\'' +
-                ", inspectionItemList=" + inspectionItemList +
-                ", daoSession=" + daoSession +
-                ", myDao=" + myDao +
-                '}';
     }
 }

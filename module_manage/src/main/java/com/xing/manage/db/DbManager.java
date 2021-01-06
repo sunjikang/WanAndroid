@@ -14,13 +14,13 @@ public class DbManager {
     private  SQLiteDatabase database;
     private  DaoSession daoSession;
     private  DaoMaster daoMaster;
-    private  CheckNowDao checkNowDao;
-    private  ResourceDao resourceDao;
-    private  LineDao lineDao;
+     private  LineDao lineDao;
     private AreaDao areaDao;
     private InspectionDao inspectionDao;
     private  FacilityDao facilityDao;
-    private DbManager() {
+    private  RecordDao recordDao;
+    private  ResourceDao resourceDao;
+     private DbManager() {
          helper = new DaoMaster.DevOpenHelper(BaseApplication.getApplication().getApplicationContext(), "WanAndroid");
          database = helper.getWritableDatabase();
          daoMaster = new DaoMaster(database);
@@ -38,12 +38,6 @@ public class DbManager {
         return instance;
     }
 
-    public CheckNowDao getCheckNowDao() {
-        return daoSession.getCheckNowDao();
-    }
-    public ResourceDao getResourceDao() {
-        return  daoSession.getResourceDao();
-     }
 
     public LineDao getLineDao() {
         return daoSession.getLineDao();
@@ -59,5 +53,11 @@ public class DbManager {
 
     public FacilityDao getFacilityDao() {
         return daoSession.getFacilityDao();
+    }
+    public RecordDao getRecordDao() {
+        return daoSession.getRecordDao();
+    }
+    public ResourceDao getResourceDao() {
+        return daoSession.getResourceDao();
     }
 }

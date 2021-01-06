@@ -29,9 +29,9 @@ public class SplashActivity extends BaseActivity {
              gotoMainActivity();
 
         } else {
-           //gotoMainActivity();
+           gotoMainActivity();
 
-          gotoLoginActivity();
+          //gotoLoginActivity();
         }
     }
 

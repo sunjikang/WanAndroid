@@ -29,7 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             EventBusHelper.register(this);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//黑色
+            StatusBarUtil.setTranslucentForImageViewInFragment(this, 0, null);
         }
 //        StatusBarUtil.setLightMode(this);
          registerNetworkChangeReceiver();

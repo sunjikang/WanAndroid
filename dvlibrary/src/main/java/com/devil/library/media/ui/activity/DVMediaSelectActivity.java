@@ -107,7 +107,7 @@ public class DVMediaSelectActivity extends AppCompatActivity implements View.OnC
         //找到控件
         btn_selectFolder = findViewById(R.id.btn_selectFolder);
         btn_sure = findViewById(R.id.btn_sure);
-        tv_title = findViewById(R.id.tv_title);
+        tv_title = findViewById(R.id.tv_record_name);
         iv_back = findViewById(R.id.iv_back);
         rl_titleBar = findViewById(R.id.rl_titleBar);
         rl_bottom = findViewById(R.id.rl_bottom);

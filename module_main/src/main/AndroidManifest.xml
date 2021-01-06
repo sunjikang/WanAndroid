@@ -10,7 +10,7 @@
             android:name=".activity.AboutActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.handle.HistoryActivity"
+            android:name=".activity.WebViewActivity"
             android:exported="false"></activity>
 
     </application>

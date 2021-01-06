@@ -23,7 +23,7 @@
             android:layout_marginTop="20dp"
             android:drawablePadding="10dp"
             android:hint="@string/please_input_host_hint"
-            android:text="http://101.200.140.188:8901/" />
+            android:text="http://10.2.8.64:8888/" />
 
 
         <View

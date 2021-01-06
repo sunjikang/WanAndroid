@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity {
         super.initData();
         fragmentManager = getSupportFragmentManager();
         createFragment();
-        selectFragment(0);
+        selectFragment(1);
         homeRadioButton.setChecked(true);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -61,10 +61,11 @@ public class MainActivity extends BaseActivity {
                     return;
                 }
                 currentSelectedId = checkedId;
-                if (checkedId == R.id.rb_home) {
+                if (checkedId == R.id.rb_system) {
                     selectFragment(0);
-                }  else if (checkedId == R.id.rb_system) {
+                }  else if (checkedId == R.id.rb_home) {
                     selectFragment(1);
+
                 } else if (checkedId == R.id.rb_mine) {
                     selectFragment(2);
 
@@ -97,16 +98,14 @@ public class MainActivity extends BaseActivity {
     private void createFragment() {
         fragmentList = new ArrayList<>();
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        HomeFragment homeFragment = new HomeFragment();
-        ft.add(R.id.fl_main_container, homeFragment);
-        fragmentList.add(homeFragment);
-
-
-
 
         SystemFragment  systemFragment = new SystemFragment();
         ft.add(R.id.fl_main_container, systemFragment);
         fragmentList.add(systemFragment);
+
+        HomeFragment homeFragment = new HomeFragment();
+        ft.add(R.id.fl_main_container, homeFragment);
+        fragmentList.add(homeFragment);
 
         MineFragment mineFragment = new MineFragment();
         ft.add(R.id.fl_main_container, mineFragment);
@@ -122,7 +121,6 @@ public class MainActivity extends BaseActivity {
      * @param index
      */
     private void selectFragment(int index) {
-         setStatusBarTranslucent(0);
 
         FragmentTransaction ft = fragmentManager.beginTransaction();
         for (int i = 0; i < fragmentList.size(); i++) {
@@ -142,13 +140,7 @@ public class MainActivity extends BaseActivity {
     public void setStatusBarColor() {
         StatusBarUtil.setTransparentForImageViewInFragment(this, null);
     }
-     public void setStatusBarTranslucent(int alpha) {
-        StatusBarUtil.setTranslucentForImageViewInFragment(this, alpha, null);
-    }
 
-    public void setStatusBarTextColorBlack() {
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//黑色
-    }
 
 
 }

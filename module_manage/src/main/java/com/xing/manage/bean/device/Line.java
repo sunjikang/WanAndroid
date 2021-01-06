@@ -11,6 +11,9 @@ import java.util.List;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
 import com.xing.manage.db.DaoSession;
+import com.xing.manage.db.InspectionDao;
+import com.xing.manage.db.FacilityDao;
+import com.xing.manage.db.RecordDao;
 import com.xing.manage.db.AreaDao;
 import com.xing.manage.db.LineDao;
 
@@ -21,14 +24,15 @@ import com.xing.manage.db.LineDao;
 @Entity
 public class Line implements Parcelable {
     @Id(autoincrement = true)
-    public Long id;//        "id":"1329014116379136000",
+    public Long mmid;
+    public Long id;   //        "id":"1329014116379136000",
     public String createBy;//           "createBy":"admin",
     public String createTime;//         "createTime":"2020-11-18 18:50:31",
     public String updateBy;//          "updateBy":"admin",
     public String updateTime;//          "updateTime":"2020-11-18 18:50:31",
     public String delFlag;//          "delFlag":0,
     public String openStatus;//          "openStatus":0,
-    public String lineName;//          "lineName":"测试线路1",
+    public String title;//          "lineName":"测试线路1",
     public String lineCode;//          "lineCode":"CSXL1118",
     public String post;//           "post":"锅炉",
     public String taskType;//           "taskType":"定期巡检",
@@ -37,33 +41,30 @@ public class Line implements Parcelable {
     public String standbyI;//           "standbyI":"",
     public String standbyII;//           "standbyII":"",
     public String standbyIII;//            "standbyIII":"",
-    @ToMany(referencedJoinProperty = "lineId")
-    public List<Area> dmList;//            "dmList":
+    public String inspectionPeriod; //巡检周期
+    public Long startCheckTime;  //开始巡检时间
+    public Long endCheckTime;   //结束巡检时间
 
-    @Override
-    public String toString() {
-        return "Line{" +
-                "id=" + id +
-                ", createBy='" + createBy + '\'' +
-                ", createTime='" + createTime + '\'' +
-                ", updateBy='" + updateBy + '\'' +
-                ", updateTime='" + updateTime + '\'' +
-                ", delFlag='" + delFlag + '\'' +
-                ", openStatus='" + openStatus + '\'' +
-                ", lineName='" + lineName + '\'' +
-                ", lineCode='" + lineCode + '\'' +
-                ", post='" + post + '\'' +
-                ", taskType='" + taskType + '\'' +
-                ", startStatus='" + startStatus + '\'' +
-                ", remark='" + remark + '\'' +
-                ", standbyI='" + standbyI + '\'' +
-                ", standbyII='" + standbyII + '\'' +
-                ", standbyIII='" + standbyIII + '\'' +
-                ", dmList=" + dmList +
-                '}';
-    }
+    @ToMany(referencedJoinProperty = "lineId")
+    public List<Area> dmList;//区域列表
+
+    @ToMany(referencedJoinProperty = "lineId")
+    public List<Record> recordList;//记录列表
+
+
+    @ToMany(referencedJoinProperty = "lineId")
+    public List<Facility> facilityList;//设备列表
+
+    @ToMany(referencedJoinProperty = "lineId")
+    public List<Inspection> inspectionList;  //巡检项列表
+
 
     protected Line(Parcel in) {
+        if (in.readByte() == 0) {
+            mmid = null;
+        } else {
+            mmid = in.readLong();
+        }
         if (in.readByte() == 0) {
             id = null;
         } else {
@@ -75,7 +76,7 @@ public class Line implements Parcelable {
         updateTime = in.readString();
         delFlag = in.readString();
         openStatus = in.readString();
-        lineName = in.readString();
+        title = in.readString();
         lineCode = in.readString();
         post = in.readString();
         taskType = in.readString();
@@ -84,14 +85,31 @@ public class Line implements Parcelable {
         standbyI = in.readString();
         standbyII = in.readString();
         standbyIII = in.readString();
+        inspectionPeriod = in.readString();
+        if (in.readByte() == 0) {
+            startCheckTime = null;
+        } else {
+            startCheckTime = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            endCheckTime = null;
+        } else {
+            endCheckTime = in.readLong();
+        }
         dmList = in.createTypedArrayList(Area.CREATOR);
+        recordList = in.createTypedArrayList(Record.CREATOR);
+        facilityList = in.createTypedArrayList(Facility.CREATOR);
+        inspectionList = in.createTypedArrayList(Inspection.CREATOR);
     }
 
-    @Generated(hash = 1874855571)
-    public Line(Long id, String createBy, String createTime, String updateBy,
-            String updateTime, String delFlag, String openStatus, String lineName,
-            String lineCode, String post, String taskType, String startStatus,
-            String remark, String standbyI, String standbyII, String standbyIII) {
+    @Generated(hash = 751128344)
+    public Line(Long mmid, Long id, String createBy, String createTime,
+            String updateBy, String updateTime, String delFlag, String openStatus,
+            String title, String lineCode, String post, String taskType,
+            String startStatus, String remark, String standbyI, String standbyII,
+            String standbyIII, String inspectionPeriod, Long startCheckTime,
+            Long endCheckTime) {
+        this.mmid = mmid;
         this.id = id;
         this.createBy = createBy;
         this.createTime = createTime;
@@ -99,7 +117,7 @@ public class Line implements Parcelable {
         this.updateTime = updateTime;
         this.delFlag = delFlag;
         this.openStatus = openStatus;
-        this.lineName = lineName;
+        this.title = title;
         this.lineCode = lineCode;
         this.post = post;
         this.taskType = taskType;
@@ -108,37 +126,23 @@ public class Line implements Parcelable {
         this.standbyI = standbyI;
         this.standbyII = standbyII;
         this.standbyIII = standbyIII;
+        this.inspectionPeriod = inspectionPeriod;
+        this.startCheckTime = startCheckTime;
+        this.endCheckTime = endCheckTime;
     }
 
     @Generated(hash = 1133511183)
     public Line() {
     }
 
-    public static final Creator<Line> CREATOR = new Creator<Line>() {
-        @Override
-        public Line createFromParcel(Parcel in) {
-            return new Line(in);
-        }
-
-        @Override
-        public Line[] newArray(int size) {
-            return new Line[size];
-        }
-    };
-    /** Used to resolve relations */
-    @Generated(hash = 2040040024)
-    private transient DaoSession daoSession;
-    /** Used for active entity operations. */
-    @Generated(hash = 447887085)
-    private transient LineDao myDao;
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        if (mmid == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(mmid);
+        }
         if (id == null) {
             dest.writeByte((byte) 0);
         } else {
@@ -151,7 +155,7 @@ public class Line implements Parcelable {
         dest.writeString(updateTime);
         dest.writeString(delFlag);
         dest.writeString(openStatus);
-        dest.writeString(lineName);
+        dest.writeString(title);
         dest.writeString(lineCode);
         dest.writeString(post);
         dest.writeString(taskType);
@@ -160,7 +164,36 @@ public class Line implements Parcelable {
         dest.writeString(standbyI);
         dest.writeString(standbyII);
         dest.writeString(standbyIII);
+        dest.writeString(inspectionPeriod);
+        if (startCheckTime == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(startCheckTime);
+        }
+        if (endCheckTime == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(endCheckTime);
+        }
         dest.writeTypedList(dmList);
+        dest.writeTypedList(recordList);
+        dest.writeTypedList(facilityList);
+        dest.writeTypedList(inspectionList);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public Long getMmid() {
+        return this.mmid;
+    }
+
+    public void setMmid(Long mmid) {
+        this.mmid = mmid;
     }
 
     public Long getId() {
@@ -219,12 +252,12 @@ public class Line implements Parcelable {
         this.openStatus = openStatus;
     }
 
-    public String getLineName() {
-        return this.lineName;
+    public String getTitle() {
+        return this.title;
     }
 
-    public void setLineName(String lineName) {
-        this.lineName = lineName;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getLineCode() {
@@ -291,11 +324,35 @@ public class Line implements Parcelable {
         this.standbyIII = standbyIII;
     }
 
+    public String getInspectionPeriod() {
+        return this.inspectionPeriod;
+    }
+
+    public void setInspectionPeriod(String inspectionPeriod) {
+        this.inspectionPeriod = inspectionPeriod;
+    }
+
+    public Long getStartCheckTime() {
+        return this.startCheckTime;
+    }
+
+    public void setStartCheckTime(Long startCheckTime) {
+        this.startCheckTime = startCheckTime;
+    }
+
+    public Long getEndCheckTime() {
+        return this.endCheckTime;
+    }
+
+    public void setEndCheckTime(Long endCheckTime) {
+        this.endCheckTime = endCheckTime;
+    }
+
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 901198156)
+    @Generated(hash = 927837264)
     public List<Area> getDmList() {
         if (dmList == null) {
             final DaoSession daoSession = this.daoSession;
@@ -303,7 +360,7 @@ public class Line implements Parcelable {
                 throw new DaoException("Entity is detached from DAO context");
             }
             AreaDao targetDao = daoSession.getAreaDao();
-            List<Area> dmListNew = targetDao._queryLine_DmList(id);
+            List<Area> dmListNew = targetDao._queryLine_DmList(mmid);
             synchronized (this) {
                 if (dmList == null) {
                     dmList = dmListNew;
@@ -317,6 +374,92 @@ public class Line implements Parcelable {
     @Generated(hash = 1338713364)
     public synchronized void resetDmList() {
         dmList = null;
+    }
+
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 121132901)
+    public List<Record> getRecordList() {
+        if (recordList == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            RecordDao targetDao = daoSession.getRecordDao();
+            List<Record> recordListNew = targetDao._queryLine_RecordList(mmid);
+            synchronized (this) {
+                if (recordList == null) {
+                    recordList = recordListNew;
+                }
+            }
+        }
+        return recordList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 1700181837)
+    public synchronized void resetRecordList() {
+        recordList = null;
+    }
+
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 1412400628)
+    public List<Facility> getFacilityList() {
+        if (facilityList == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            FacilityDao targetDao = daoSession.getFacilityDao();
+            List<Facility> facilityListNew = targetDao
+                    ._queryLine_FacilityList(mmid);
+            synchronized (this) {
+                if (facilityList == null) {
+                    facilityList = facilityListNew;
+                }
+            }
+        }
+        return facilityList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 2120366010)
+    public synchronized void resetFacilityList() {
+        facilityList = null;
+    }
+
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 269398450)
+    public List<Inspection> getInspectionList() {
+        if (inspectionList == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            InspectionDao targetDao = daoSession.getInspectionDao();
+            List<Inspection> inspectionListNew = targetDao
+                    ._queryLine_InspectionList(mmid);
+            synchronized (this) {
+                if (inspectionList == null) {
+                    inspectionList = inspectionListNew;
+                }
+            }
+        }
+        return inspectionList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 211230371)
+    public synchronized void resetInspectionList() {
+        inspectionList = null;
     }
 
     /**
@@ -362,7 +505,23 @@ public class Line implements Parcelable {
         myDao = daoSession != null ? daoSession.getLineDao() : null;
     }
 
+    public static final Creator<Line> CREATOR = new Creator<Line>() {
+        @Override
+        public Line createFromParcel(Parcel in) {
+            return new Line(in);
+        }
 
+        @Override
+        public Line[] newArray(int size) {
+            return new Line[size];
+        }
+    };
+    /** Used to resolve relations */
+    @Generated(hash = 2040040024)
+    private transient DaoSession daoSession;
+    /** Used for active entity operations. */
+    @Generated(hash = 447887085)
+    private transient LineDao myDao;
 }
 
 

@@ -72,8 +72,7 @@ public class HistoryActivity extends BaseMVPActivity<HistoryPresenter> implement
     }
 
 
-    String url="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606020113167&di=e5774e1f7da2d5f5ee3098e0ecc8b687&imgtype=0&src=http%3A%2F%2Fimg0.imgtn.bdimg.com%2Fit%2Fu%3D2186941715%2C2541343206%26fm%3D214%26gp%3D0.jpg";
-
+    String url="http://101.200.140.188:8901/xboot/actProcess/getHighlightImg/315014?accessToken=152d5276b3684abb8797b02f95e80ea3&time=Wed%20Dec%2002%202020%2015:17:43%20GMT+0800%20(%E4%B8%AD%E5%9B%BD%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)";
     @Override
     protected void initData() {
         super.initData();
@@ -109,15 +108,12 @@ public class HistoryActivity extends BaseMVPActivity<HistoryPresenter> implement
         } else {
             adapter.setNewData(bean);
         }
-
-
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId()==R.id.imageView6){
            gotoShowPhotoActivity();
-           // presenter.getHistory(procInstId);
         }
     }
 

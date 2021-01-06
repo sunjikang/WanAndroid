@@ -18,14 +18,14 @@ public class ProgressManageAdapter extends BaseQuickAdapter<ProgressManageBean, 
 
     @Override
     protected void convert(BaseViewHolder helper, ProgressManageBean item) {
-        helper.setText(R.id.tv_handle_name, item.getName())
+        helper.setText(R.id.tv_record_name, item.getName())
                 .setText(R.id.tv_handle_version, "版本：V" + item.getVersion())
                 .setText(R.id.tv_handle_category, "所属分类：" + item.getCategoryId())
                 .setText(R.id.tv_handle_state, "状态：" + item.getStatus())
                 .addOnClickListener(R.id.btn_is_suspend)
                 .addOnClickListener(R.id.btn_progress_distribution)
-                .addOnClickListener(R.id.btn_change_model)
-                .addOnClickListener(R.id.btn_delete);
+                .addOnClickListener(R.id.btn_upload)
+                .addOnClickListener(R.id.btn_start_check);
 
     }
 }

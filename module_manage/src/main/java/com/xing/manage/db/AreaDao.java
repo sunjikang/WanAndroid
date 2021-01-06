@@ -27,22 +27,23 @@ public class AreaDao extends AbstractDao<Area, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property LineId = new Property(0, Long.class, "lineId", false, "LINE_ID");
-        public final static Property Id = new Property(1, Long.class, "id", true, "_id");
-        public final static Property CreateBy = new Property(2, String.class, "createBy", false, "CREATE_BY");
-        public final static Property CreateTime = new Property(3, String.class, "createTime", false, "CREATE_TIME");
-        public final static Property UpdateBy = new Property(4, String.class, "updateBy", false, "UPDATE_BY");
-        public final static Property UpdateTime = new Property(5, String.class, "updateTime", false, "UPDATE_TIME");
-        public final static Property DelFlag = new Property(6, String.class, "delFlag", false, "DEL_FLAG");
-        public final static Property OpenStatus = new Property(7, String.class, "openStatus", false, "OPEN_STATUS");
-        public final static Property AreaCode = new Property(8, String.class, "areaCode", false, "AREA_CODE");
-        public final static Property Title = new Property(9, String.class, "title", false, "TITLE");
-        public final static Property Specialty = new Property(10, String.class, "specialty", false, "SPECIALTY");
-        public final static Property Unit = new Property(11, String.class, "unit", false, "UNIT");
-        public final static Property Remark = new Property(12, String.class, "remark", false, "REMARK");
-        public final static Property StandbyI = new Property(13, String.class, "standbyI", false, "STANDBY_I");
-        public final static Property StandbyII = new Property(14, String.class, "standbyII", false, "STANDBY_II");
-        public final static Property StandbyIII = new Property(15, String.class, "standbyIII", false, "STANDBY_III");
+        public final static Property Mmid = new Property(0, Long.class, "mmid", true, "_id");
+        public final static Property LineId = new Property(1, Long.class, "lineId", false, "LINE_ID");
+        public final static Property Id = new Property(2, Long.class, "id", false, "ID");
+        public final static Property CreateBy = new Property(3, String.class, "createBy", false, "CREATE_BY");
+        public final static Property CreateTime = new Property(4, String.class, "createTime", false, "CREATE_TIME");
+        public final static Property UpdateBy = new Property(5, String.class, "updateBy", false, "UPDATE_BY");
+        public final static Property UpdateTime = new Property(6, String.class, "updateTime", false, "UPDATE_TIME");
+        public final static Property DelFlag = new Property(7, String.class, "delFlag", false, "DEL_FLAG");
+        public final static Property OpenStatus = new Property(8, String.class, "openStatus", false, "OPEN_STATUS");
+        public final static Property AreaCode = new Property(9, String.class, "areaCode", false, "AREA_CODE");
+        public final static Property Title = new Property(10, String.class, "title", false, "TITLE");
+        public final static Property Specialty = new Property(11, String.class, "specialty", false, "SPECIALTY");
+        public final static Property Unit = new Property(12, String.class, "unit", false, "UNIT");
+        public final static Property Remark = new Property(13, String.class, "remark", false, "REMARK");
+        public final static Property StandbyI = new Property(14, String.class, "standbyI", false, "STANDBY_I");
+        public final static Property StandbyII = new Property(15, String.class, "standbyII", false, "STANDBY_II");
+        public final static Property StandbyIII = new Property(16, String.class, "standbyIII", false, "STANDBY_III");
     }
 
     private DaoSession daoSession;
@@ -62,22 +63,23 @@ public class AreaDao extends AbstractDao<Area, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"AREA\" (" + //
-                "\"LINE_ID\" INTEGER," + // 0: lineId
-                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 1: id
-                "\"CREATE_BY\" TEXT," + // 2: createBy
-                "\"CREATE_TIME\" TEXT," + // 3: createTime
-                "\"UPDATE_BY\" TEXT," + // 4: updateBy
-                "\"UPDATE_TIME\" TEXT," + // 5: updateTime
-                "\"DEL_FLAG\" TEXT," + // 6: delFlag
-                "\"OPEN_STATUS\" TEXT," + // 7: openStatus
-                "\"AREA_CODE\" TEXT," + // 8: areaCode
-                "\"TITLE\" TEXT," + // 9: title
-                "\"SPECIALTY\" TEXT," + // 10: specialty
-                "\"UNIT\" TEXT," + // 11: unit
-                "\"REMARK\" TEXT," + // 12: remark
-                "\"STANDBY_I\" TEXT," + // 13: standbyI
-                "\"STANDBY_II\" TEXT," + // 14: standbyII
-                "\"STANDBY_III\" TEXT);"); // 15: standbyIII
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: mmid
+                "\"LINE_ID\" INTEGER," + // 1: lineId
+                "\"ID\" INTEGER," + // 2: id
+                "\"CREATE_BY\" TEXT," + // 3: createBy
+                "\"CREATE_TIME\" TEXT," + // 4: createTime
+                "\"UPDATE_BY\" TEXT," + // 5: updateBy
+                "\"UPDATE_TIME\" TEXT," + // 6: updateTime
+                "\"DEL_FLAG\" TEXT," + // 7: delFlag
+                "\"OPEN_STATUS\" TEXT," + // 8: openStatus
+                "\"AREA_CODE\" TEXT," + // 9: areaCode
+                "\"TITLE\" TEXT," + // 10: title
+                "\"SPECIALTY\" TEXT," + // 11: specialty
+                "\"UNIT\" TEXT," + // 12: unit
+                "\"REMARK\" TEXT," + // 13: remark
+                "\"STANDBY_I\" TEXT," + // 14: standbyI
+                "\"STANDBY_II\" TEXT," + // 15: standbyII
+                "\"STANDBY_III\" TEXT);"); // 16: standbyIII
     }
 
     /** Drops the underlying database table. */
@@ -90,84 +92,89 @@ public class AreaDao extends AbstractDao<Area, Long> {
     protected final void bindValues(DatabaseStatement stmt, Area entity) {
         stmt.clearBindings();
  
+        Long mmid = entity.getMmid();
+        if (mmid != null) {
+            stmt.bindLong(1, mmid);
+        }
+ 
         Long lineId = entity.getLineId();
         if (lineId != null) {
-            stmt.bindLong(1, lineId);
+            stmt.bindLong(2, lineId);
         }
  
         Long id = entity.getId();
         if (id != null) {
-            stmt.bindLong(2, id);
+            stmt.bindLong(3, id);
         }
  
         String createBy = entity.getCreateBy();
         if (createBy != null) {
-            stmt.bindString(3, createBy);
+            stmt.bindString(4, createBy);
         }
  
         String createTime = entity.getCreateTime();
         if (createTime != null) {
-            stmt.bindString(4, createTime);
+            stmt.bindString(5, createTime);
         }
  
         String updateBy = entity.getUpdateBy();
         if (updateBy != null) {
-            stmt.bindString(5, updateBy);
+            stmt.bindString(6, updateBy);
         }
  
         String updateTime = entity.getUpdateTime();
         if (updateTime != null) {
-            stmt.bindString(6, updateTime);
+            stmt.bindString(7, updateTime);
         }
  
         String delFlag = entity.getDelFlag();
         if (delFlag != null) {
-            stmt.bindString(7, delFlag);
+            stmt.bindString(8, delFlag);
         }
  
         String openStatus = entity.getOpenStatus();
         if (openStatus != null) {
-            stmt.bindString(8, openStatus);
+            stmt.bindString(9, openStatus);
         }
  
         String areaCode = entity.getAreaCode();
         if (areaCode != null) {
-            stmt.bindString(9, areaCode);
+            stmt.bindString(10, areaCode);
         }
  
         String title = entity.getTitle();
         if (title != null) {
-            stmt.bindString(10, title);
+            stmt.bindString(11, title);
         }
  
         String specialty = entity.getSpecialty();
         if (specialty != null) {
-            stmt.bindString(11, specialty);
+            stmt.bindString(12, specialty);
         }
  
         String unit = entity.getUnit();
         if (unit != null) {
-            stmt.bindString(12, unit);
+            stmt.bindString(13, unit);
         }
  
         String remark = entity.getRemark();
         if (remark != null) {
-            stmt.bindString(13, remark);
+            stmt.bindString(14, remark);
         }
  
         String standbyI = entity.getStandbyI();
         if (standbyI != null) {
-            stmt.bindString(14, standbyI);
+            stmt.bindString(15, standbyI);
         }
  
         String standbyII = entity.getStandbyII();
         if (standbyII != null) {
-            stmt.bindString(15, standbyII);
+            stmt.bindString(16, standbyII);
         }
  
         String standbyIII = entity.getStandbyIII();
         if (standbyIII != null) {
-            stmt.bindString(16, standbyIII);
+            stmt.bindString(17, standbyIII);
         }
     }
 
@@ -175,84 +182,89 @@ public class AreaDao extends AbstractDao<Area, Long> {
     protected final void bindValues(SQLiteStatement stmt, Area entity) {
         stmt.clearBindings();
  
+        Long mmid = entity.getMmid();
+        if (mmid != null) {
+            stmt.bindLong(1, mmid);
+        }
+ 
         Long lineId = entity.getLineId();
         if (lineId != null) {
-            stmt.bindLong(1, lineId);
+            stmt.bindLong(2, lineId);
         }
  
         Long id = entity.getId();
         if (id != null) {
-            stmt.bindLong(2, id);
+            stmt.bindLong(3, id);
         }
  
         String createBy = entity.getCreateBy();
         if (createBy != null) {
-            stmt.bindString(3, createBy);
+            stmt.bindString(4, createBy);
         }
  
         String createTime = entity.getCreateTime();
         if (createTime != null) {
-            stmt.bindString(4, createTime);
+            stmt.bindString(5, createTime);
         }
  
         String updateBy = entity.getUpdateBy();
         if (updateBy != null) {
-            stmt.bindString(5, updateBy);
+            stmt.bindString(6, updateBy);
         }
  
         String updateTime = entity.getUpdateTime();
         if (updateTime != null) {
-            stmt.bindString(6, updateTime);
+            stmt.bindString(7, updateTime);
         }
  
         String delFlag = entity.getDelFlag();
         if (delFlag != null) {
-            stmt.bindString(7, delFlag);
+            stmt.bindString(8, delFlag);
         }
  
         String openStatus = entity.getOpenStatus();
         if (openStatus != null) {
-            stmt.bindString(8, openStatus);
+            stmt.bindString(9, openStatus);
         }
  
         String areaCode = entity.getAreaCode();
         if (areaCode != null) {
-            stmt.bindString(9, areaCode);
+            stmt.bindString(10, areaCode);
         }
  
         String title = entity.getTitle();
         if (title != null) {
-            stmt.bindString(10, title);
+            stmt.bindString(11, title);
         }
  
         String specialty = entity.getSpecialty();
         if (specialty != null) {
-            stmt.bindString(11, specialty);
+            stmt.bindString(12, specialty);
         }
  
         String unit = entity.getUnit();
         if (unit != null) {
-            stmt.bindString(12, unit);
+            stmt.bindString(13, unit);
         }
  
         String remark = entity.getRemark();
         if (remark != null) {
-            stmt.bindString(13, remark);
+            stmt.bindString(14, remark);
         }
  
         String standbyI = entity.getStandbyI();
         if (standbyI != null) {
-            stmt.bindString(14, standbyI);
+            stmt.bindString(15, standbyI);
         }
  
         String standbyII = entity.getStandbyII();
         if (standbyII != null) {
-            stmt.bindString(15, standbyII);
+            stmt.bindString(16, standbyII);
         }
  
         String standbyIII = entity.getStandbyIII();
         if (standbyIII != null) {
-            stmt.bindString(16, standbyIII);
+            stmt.bindString(17, standbyIII);
         }
     }
 
@@ -264,62 +276,64 @@ public class AreaDao extends AbstractDao<Area, Long> {
 
     @Override
     public Long readKey(Cursor cursor, int offset) {
-        return cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1);
+        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
 
     @Override
     public Area readEntity(Cursor cursor, int offset) {
         Area entity = new Area( //
-            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // lineId
-            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // id
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // createBy
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // createTime
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // updateBy
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // updateTime
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // delFlag
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // openStatus
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // areaCode
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // title
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // specialty
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // unit
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // remark
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // standbyI
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // standbyII
-            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15) // standbyIII
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // mmid
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // lineId
+            cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // id
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // createBy
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // createTime
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // updateBy
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // updateTime
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // delFlag
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // openStatus
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // areaCode
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // title
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // specialty
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // unit
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // remark
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // standbyI
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // standbyII
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16) // standbyIII
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, Area entity, int offset) {
-        entity.setLineId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setId(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
-        entity.setCreateBy(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setCreateTime(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setUpdateBy(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setUpdateTime(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setDelFlag(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setOpenStatus(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setAreaCode(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setTitle(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setSpecialty(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setUnit(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setRemark(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setStandbyI(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setStandbyII(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
-        entity.setStandbyIII(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setMmid(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setLineId(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setId(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
+        entity.setCreateBy(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setCreateTime(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setUpdateBy(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setUpdateTime(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setDelFlag(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setOpenStatus(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setAreaCode(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setTitle(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setSpecialty(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setUnit(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setRemark(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setStandbyI(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setStandbyII(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setStandbyIII(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
      }
     
     @Override
     protected final Long updateKeyAfterInsert(Area entity, long rowId) {
-        entity.setId(rowId);
+        entity.setMmid(rowId);
         return rowId;
     }
     
     @Override
     public Long getKey(Area entity) {
         if(entity != null) {
-            return entity.getId();
+            return entity.getMmid();
         } else {
             return null;
         }
@@ -327,7 +341,7 @@ public class AreaDao extends AbstractDao<Area, Long> {
 
     @Override
     public boolean hasKey(Area entity) {
-        return entity.getId() != null;
+        return entity.getMmid() != null;
     }
 
     @Override

@@ -143,11 +143,11 @@ public class DoneFragment extends BaseMVPFragment<DonePresenter> implements Done
                 @Override
                 public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                     DoneBean result = dataList.get(position);
-                    if (view.getId() == R.id.btn_change_model) {
+                    if (view.getId() == R.id.btn_upload) {
                         showDialog(result, 1);
-                    } else if (view.getId() == R.id.btn_edit_history) {
+                    } else if (view.getId() == R.id.btn_history) {
                         gotoHistoryActivity(result.getProcInstId());
-                     } else if (view.getId() == R.id.btn_delete) {
+                     } else if (view.getId() == R.id.btn_start_check) {
 
                         new MaterialDialog.Builder(getContext()).title("确认删除吗？")
                                 .positiveText("确定") //肯定按键

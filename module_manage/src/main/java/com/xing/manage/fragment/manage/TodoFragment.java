@@ -1,15 +1,11 @@
     package com.xing.manage.fragment.manage;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,11 +17,9 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.xing.commonbase.base.BaseMVPFragment;
-import com.xing.commonbase.util.ToastUtil;
 import com.xing.manage.R;
 import com.xing.manage.adapter.manage.TodoAdapter;
 import com.xing.manage.bean.ProcessNodeVo;
-import com.xing.manage.bean.manage.ProgressManageBean;
 import com.xing.manage.bean.manage.TodoBean;
 import com.xing.manage.contract.TodoContract;
 import com.xing.manage.presenter.TodoPresenter;
@@ -49,7 +43,7 @@ public class TodoFragment extends BaseMVPFragment<TodoPresenter> implements Todo
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.fragmentl_manage_todo;
+        return R.layout.fragment_manage_done;
     }
 
     @Override
@@ -130,15 +124,15 @@ public class TodoFragment extends BaseMVPFragment<TodoPresenter> implements Todo
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 TodoBean result = dataList.get(position);
-                if (view.getId() == R.id.btn_change_model) {
+                if (view.getId() == R.id.btn_upload) {
 
                 } else if (view.getId() == R.id.btn_pass) {
                     showDialog(result, 1);
                 } else if (view.getId() == R.id.btn_back) {
                     showDialog(result, 2);
-                } else if (view.getId() == R.id.btn_edit_history) {
+                } else if (view.getId() == R.id.btn_history) {
                     showDialog(result, 3);
-                } else if (view.getId() == R.id.btn_delete) {
+                } else if (view.getId() == R.id.btn_start_check) {
                     gotoHistoryActivity(result.getProcInstId());
                 }
             }

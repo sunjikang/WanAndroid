@@ -21,7 +21,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_handle_name"
+                android:id="@+id/tv_record_name"
                 android:layout_width="0dp"
                 android:layout_weight="3"
                 android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             tools:text="版本：V1" />
 
             <TextView
-                android:id="@+id/tv_handle_applyer"
+                android:id="@+id/tv_creater"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -115,7 +115,7 @@
                 android:text="审批详情"></Button>
 
             <Button
-                android:id="@+id/btn_change_model"
+                android:id="@+id/btn_upload"
                 style="@style/button_white_style"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -123,7 +123,7 @@
                 android:text="表单数据"></Button>
 
             <Button
-                android:id="@+id/btn_delete"
+                android:id="@+id/btn_start_check"
                 style="@style/button_red_style"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
